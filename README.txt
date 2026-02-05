@@ -24,29 +24,17 @@ python -m venv venv
 venv\Scripts\activate
 3 - install dependencies:
 pip install -r requirements.txt
-4 - environment variables configuration: 
-SECRET_KEY=your secret key 
-DEBUG=True
-on database json in the settings file:
-
-ENGINE=django.db.backends.postgresql',
-DB_name=your_db
-DB_USER=your_user
-DB_PASSWORD=your_password
-DB_HOST=localhost
-DB_PORT=5432
-(replace the "your" values for your own data)
-5 - create directories:
-Actually, the system create the directories media/ and backups/ (to save images uploaded by users and save a copy of the database, respectively) if both or one doesn’t exists, but you can create both manually, in the main project folder.
-6 - migrations: 
+4 - migrations: 
 python manage.py makemigrations
 python manage.py makemigrations —empty autotaller
 rename [migration made on the last instruction] 0002_establishment.py
 python 0002_create_establishment.py
 python manage.py migrate
-7 - execute server: python manage.py runserver
+5 - execute server: python manage.py runserver
 Remember you should first initialize the virtual environment to run the server, basically write venv\Scripts\activate
 This system it’s supported for English and Spanish, you can just translate the text of the views with the translation of your browser and it will work.
+6 - create directories:
+Actually, the system create the directories media/ and backups/ (to save images uploaded by users and save a copy of the database, respectively) if both or one doesn’t exists, but you can create both manually, in the main project folder.
 
 The project was just tested in windows, it’s not for public production, however, there are no features or environment variables of windows mandatory to use and run the system. More details about this on the user guide.txt.
 
@@ -89,30 +77,17 @@ python -m venv venv
 venv\Scripts\activate
 3 - Instalar dependencias:
 pip install -r requirements.txt
-4 - Configuración de variables de entorno:
-SECRET_KEY=tu clave secreta
-DEBUG=True
-en el archivo JSON de la base de datos en el archivo de configuración:
-
-ENGINE=django.db.backends.postgresql',
-DB_name=tu_db
-DB_USER=tu_usuario
-DB_PASSWORD=tu_contraseña
-DB_HOST=localhost
-DB_PORT=5432
-(Reemplaza "tu" por tus propios datos)
-5 - Crear directorios:
-El sistema crea los directorios. media/ y backups/ (para guardar las imágenes subidas por los usuarios y una copia de la base de datos, respectivamente) si no existen ninguno de los dos, pero puedes crearlos manualmente en la carpeta principal del proyecto.
-
-6 - Migraciones:
+4 - Migraciones:
 python manage.py makemigrations
 python manage.py makemigrations —empty autotaller
 rename [migración realizada en la última instrucción] 0002_establishment.py
 python 0002_create_establishment.py
 python manage.py migrate
-7 - Ejecutar servidor: python manage.py runserver
+5 - Ejecutar servidor: python manage.py runserver
 Recuerda que primero debes inicializar el entorno virtual para ejecutar el servidor; básicamente, escribe venv\Scripts\activate.
 Este sistema es compatible con inglés y español; puedes traducir el texto de las vistas con la traducción de tu navegador y funcionará.
+6 - Crear directorios:
+El sistema crea los directorios. media/ y backups/ (para guardar las imágenes subidas por los usuarios y una copia de la base de datos, respectivamente) si no existen ninguno de los dos, pero puedes crearlos manualmente en la carpeta principal del proyecto.
 
 El proyecto se probó en Windows; no está destinado a producción pública. Sin embargo, no hay características ni variables de entorno de Windows obligatorias para usar y ejecutar el sistema. Más detalles sobre esto en el archivo user guide.txt.
 
@@ -127,4 +102,4 @@ en tallerapp/local.py:
 EMAIL_KEY = "tu clave API"
 SENDER_NAME = "tu nombre configurado en Brevo para el remitente"
 SENDER_EMAIL = "tu correo configurado en Brevo para el remitente"
-Todos estos valores son datos de ejemplo. En este último caso, para acceder a esta función (enviar correos), necesitarás crear una cuenta en la plataforma Brevo. Regístrate con tu correo electrónico de empresa o el que prefieras y crear una clave API. Ve a Configuración, luego a SMTP y API, selecciona la opción "Claves API y MCP" y genera tu propia clave API. Luego, reemplaza los valores anteriores (la clave API) por los generados por la plataforma. El correo electrónico y el nombre del remitente deben ser configurados por ti al crear la nueva clave API.
+Todos estos valores son datos de ejemplo. En este último caso, para acceder a esta función (enviar correos), necesitarás crear una cuenta en la plataforma Brevo. Regístrarte con tu correo electrónico del negocio o el que prefieras y crear una clave API. Ve a Configuración, luego a SMTP y API, selecciona la opción "Claves API y MCP" y genera tu propia clave API. Luego, reemplaza los valores anteriores (la clave API) por los generados por la plataforma. El correo electrónico y el nombre del remitente deben ser configurados por ti al crear la nueva clave API.

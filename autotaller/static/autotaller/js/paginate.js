@@ -167,7 +167,7 @@ async function show(index){
     }
     let ent = String(window.location.pathname.split('/')[2]) === "2" || String(window.location.pathname.split('/')[2]) === "vehicleFilter" ? "vehicles" : "maintenances";
     let startNum = data.get('start') === "" || data.get('start') == null ? 0 : data.get('start');
-    let plus = parseInt(startNum) > 0 && response.items.length > 0 ? 1 : 0;
+    let plus = parseInt(startNum) > 0 || response.items.length > 0 ? 1 : 0;
     document.getElementById('pagination-data').textContent = "Showing " + String((parseInt(startNum) * 18) + plus) +  "-" + String((parseInt(startNum) * 18) + response.items.length) + " of " + String(response.total) + " " + ent;
 }
 
