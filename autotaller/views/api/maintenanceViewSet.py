@@ -311,8 +311,8 @@ class MaintenanceViewSet(viewsets.ModelViewSet):
             }
         payload = {
             "sender" : {
-                "name" : "workshopAdmin",
-                "email" : "aurisaoficial@gmail.com"
+                "name" : SENDER_NAME,
+                "email" : SENDER_EMAIL
                 },
             "to" : [
                 {"email" : to_email}
