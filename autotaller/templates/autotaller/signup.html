@@ -1,0 +1,73 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'autotaller/normalize.css' %}?v={{ version }}">
+    <link rel="stylesheet" href="{% static 'autotaller/signup_style.css' %}?v={{ version }}">
+    <script src="{%static 'autotaller/js/addUsuario.js'%}"></script>
+    <title>create</title>
+</head>
+<body>
+    <section class="sec__form">
+        <form id="form__sign" class="form__sign" method="post">
+            {%csrf_token%}
+            <!--con esto se validan los permisos para acceder a la vista (csrf_token)-->
+            <meta name="csrf_token" content="{{ csrf_token }}">
+            <fieldset class="form__fieldset fieldset__h2">
+                <h2>Create your account</h2>
+            </fieldset>
+            <fieldset class="form__fieldset">
+                <input class="input__text" id="input1" name="name" type="text" placeholder="enter your name" required/>
+            </fieldset>
+            <fieldset class="form__fieldset">
+                <input class="input__text" id="input2" name="mail" type="email" placeholder="enter your mail" required/>
+            </fieldset>
+            <fieldset class="form__fieldset">
+                <input class="input__text" id="input3" name="id_card" type="text" placeholder="enter any id card valid" maxlength=20" required/>
+            </fieldset>
+            <fieldset class="form__fieldset">
+                <input class="input__text" id="input4" name="userName" type="text" placeholder="enter an appropriate nickname" required/>
+            </fieldset>
+            <fieldset class="form__fieldset">
+                <input class="input__text" type="text" name="password" id="input5" placeholder="enter your password" required/>
+            </fieldset>
+            <fieldset class="form__fieldset fieldset__data">
+                <span>This data is required for the administrator user to register.
+                    Some of this information is confidential, as warranted.
+                </span>
+            </fieldset>
+            <fieldset class="form__fieldset form__submit">
+                <input type="submit" value="save" class="input__submit"/>
+            </fieldset>
+        </form>
+    </section>
+<script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    document.getElementById('form__sign').addEventListener('submit', async (event) =>{
+                        event.preventDefault();
+                        let nom = document.getElementById('input1').value;
+                        let email = document.getElementById('input2').value;
+                        let idUser = document.getElementById('input3').value;
+                        let username = document.getElementById('input4').value;
+                        let pass = document.getElementById('input5').value;
+                        const user= {
+                            name : nom,
+                            id_card : idUser,
+                            mail : email,
+                            userName : username,
+                            password : pass
+                        };
+                        //fetch que conecta con el api de insert usuario por url-->
+                        const response = await add('/api/user/', user);
+                        if (response === 200 || response === 201){
+                            window.location.href = "/";
+                        }
+                    }
+                );
+            });
+                </script>
+</body>
+</html>

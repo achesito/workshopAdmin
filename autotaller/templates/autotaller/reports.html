@@ -1,0 +1,223 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Reporte de maintenances</title>
+  <link rel="stylesheet" href="{%static 'autotaller/reportes.css' %}">
+  <link rel="stylesheet" href="{%static 'autotaller/normalize.css' %}">
+  <link rel="stylesheet" href="{%static 'autotaller/header.css' %}">
+</head>
+<body>
+  <header>
+    <div class="header-display">
+            <div class="options">
+                <nav class="nav-options">
+                        <ul class="ul-options">
+                            <li class="li-options" id="li-options0"><a href="/checkRegistration">Home</a></li>
+                            <li class="li-options" id="li-options1"><a href="/addMaintenance">add maintenance</a></li>
+                            <li class="li-options" id="li-options2"><a href="/addVehicle">add vehicle</a></li>
+                            <li class="li-options" id="li-options3"><a>create report</a></li>
+                            <li class="li-options" id="li-options4"><a href="/agenda">scheduled</a></li>
+                            <script>
+                                function removeMore(){
+                                    if (window.innerWidth > 1120){
+                                        document.getElementById('li-more').style.display = 'none';
+                                    }
+                                    else{
+                                        document.getElementById('li-more').style.display = 'block';
+                                    }
+                                }
+                                function load(){
+                                    const width = 840;
+                                    if (window.innerWidth <= 840 && document.getElementById('li-container').lastChild.textContent != "RESPONSABILIDAD"){
+                                        const div = document.createElement('div');
+                                        const a = document.createElement('a');
+                                    }
+                                    else{
+                                        if (window.innerWidth > 840 && document.getElementById('li-container').lastChild.textContent === "RESPONSABILIDAD"){
+                                            document.getElementById('li-container').lastChild.remove();
+                                        }
+                                }
+                            }
+                                window.addEventListener("resize", removeMore);
+                                window.addEventListener("resize", load);
+                                document.addEventListener('DOMContentLoaded',load);
+                            </script>
+                            <script>
+                                document.getElementById('li-more').addEventListener('click', (event)=>{
+                                    document.getElementById('click-counter').textContent = (parseInt(document.getElementById('click-counter').textContent) + 1).toString();
+                                    const doc = document.getElementById('li-container');
+                                    const click_count = parseInt(document.getElementById('click-counter').textContent);
+                                    doc.classList.toggle('active');
+                                });
+                            </script>
+                            <script>
+                                const element = document.getElementById('li-more');
+                                const li = window.getComputedStyle(document.getElementById('li-more'));
+                                const observer = new MutationObserver(()=>{
+                                    if(li.display === 'none'){
+                                        document.getElementById('li-container').style.display = 'none';
+                                    }
+                                    else{
+                                        document.getElementById('li-container').style.display = 'flex';
+                                    }
+                                });
+                                observer.observe(element, {attributes : true});
+                            </script>
+                        </ul>
+                </nav>
+                <button class="responsive-button" id="responsive-button"></button>
+                <script>
+                    document.getElementById('responsive-button').addEventListener('click', function(){
+                        const menu = document.getElementById('responsive-menu');
+                        menu.classList.toggle('acti');
+                        document.getElementById('responsive-button').style.left = '100%';
+                    });
+                </script>
+                <div class="responsive-menu" id="responsive-menu">
+                    <button class="button-close-menu" id="button-close-menu"><i class="fa-solid fa-xmark"></i></button>
+                    <script>
+                        document.getElementById('button-close-menu').addEventListener('click', function(){
+                        const menu = document.getElementById('responsive-menu');
+                        menu.classList.toggle('acti');
+                        document.getElementById('responsive-button').style.left = '90%';
+                    });
+                    </script>
+                    <div class="responsive-structure" id="responsive-structure">
+                            <ul class="ul-structure" id="ul-structure">
+                                <li class="li-options-responsive" id="li1"><a href="/consultarRegistro">Home</a></li>
+                                <li class="li-options-responsive" id="li2"><a href="/agregarmaintenance">add maintenance</a></li>
+                                <li class="li-options-responsive" id="li3">add vehicle</li>
+                            </ul>
+                    </div>
+                </div>
+        </div>
+    </header>
+  <div class="container">
+    <h1>Maintenances Report</h1>
+
+    <div class="form">
+      <label>period:</label>
+      <select id="period">
+        <option value="monthly">monthly</option>
+        <option value="anual">Annual</option>
+      </select>
+
+      <span id="filtro_month">
+        <label>month:</label>
+        <select id="month"></select>
+      </span>
+
+      <label>year:</label>
+      <select id="year"></select>
+
+      <button id="btnLoad">Create report</button>
+    </div>
+
+    <div id="result">
+      <!-- Script -->
+    </div>
+  </div>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const monthes = ["January","February","March","April","May","June",
+                   "July","August","September","October","November","December"];
+    const monthSel = document.getElementById('month');
+    monthes.forEach((m,i) => {
+      const o = document.createElement('option');
+      o.value = i+1; o.text = m;
+      monthSel.appendChild(o);
+    });
+
+    const yearSel = document.getElementById('year');
+    const currentYear = new Date().getFullYear();
+    for (let y=currentYear; y>=2020; y--) {
+      const o = document.createElement('option');
+      o.value = y; o.text = y;
+      yearSel.appendChild(o);
+    }
+
+    const periodSel = document.getElementById('period');
+    function togglemonth() {
+      document.getElementById('filtro_month').style.display =
+        periodSel.value === 'monthly' ? 'inline' : 'none';
+    }
+    periodSel.addEventListener('change', togglemonth);
+    togglemonth();
+
+    document.getElementById('btnLoad').addEventListener('click', () => {
+      const period = periodSel.value;
+      const year = yearSel.value;
+      const month = monthSel.value;
+      let url = `/api/maintenance/report/?period=${period}&year=${year}`;
+      if (period === 'monthly') url += `&month=${month}`;
+
+      fetch(url)
+        .then(response => {
+          if (!response.ok) throw new Error("Error on request");
+          return response.json();
+        })
+        .then(data => {
+            console.log(data);
+            renderresult(data);
+        })
+        .catch(error => {
+          console.error("Error:", error);
+          document.getElementById('result').innerHTML =
+            `<p style="color: red; font-weight: bold;">No registers over this time lapse.</p>`;
+        });
+    });
+
+    function renderresult(data) {
+      let html = `<h2>Report ${data.period.toUpperCase()} ${data.period==='monthly'? data.month+'/'+data.year: data.year}</h2>`;
+      html += '<h3>Summary by task status</h3><ul>';
+      data.summary_status.forEach(e =>
+        html += `<li>${e.task_status}: ${e.quantity} registers</li>`
+      );
+      html += '</ul>';
+
+      html += `<p><strong>Most common vehicle:</strong> ${data.vehicle_top?.vehicle__model || 'N/A'} (${data.vehicle_top?.quantity || 0} registers)</p>`;
+      html += `<p><strong>most requested maintenance:</strong> ${data.maintenance_top?.type || 'N/A'} (${data.maintenance_top?.quantity || 0} registers)</p>`;
+      html += `<p><strong>most used part:</strong> ${data.repuesto_top?.spare__name || 'N/A'} (${data.repuesto_top?.total_applications || 0} registers)</p>`;
+      html += `<p><strong>date with more arrivals:</strong> ${data.date_top?.date || 'N/A'} (${data.date_top?.quantity || 0} registers)</p>`;
+
+      html += `
+           <div style="text-align: right; margin: 10px 0;">
+           <button id="btnExport" style="padding: 8px; margin-right: 10px; font-size: 16px;">Export Excel</button>
+           </div>
+      `;
+
+      html += '<h3>Detail</h3><table class="table"><thead><tr>'
+        +'<th>Cliente</th><th>type</th><th>task_status</th><th>date</th><th>cost_job</th><th>Total</th>'
+        +'</tr></thead><tbody>';
+
+      data.reports.forEach(r =>
+        html += `<tr>
+                  <td>${r.customer}</td>
+                  <td>${r.type}</td>
+                  <td>${r.task_status}</td>
+                  <td>${r.date}</td>
+                  <td>$${r.cost_job}</td>
+                  <td>$${r.total}</td>
+                </tr>`
+      );
+      html += '</tbody></table>';
+
+      document.getElementById('result').innerHTML = html;
+      
+      const btnExport = document.getElementById('btnExport');
+       if (btnExport) {
+           btnExport.addEventListener('click', () => {
+           let url = `/api/maintenance/Export_excel/?period=${data.period}&year=${data.year}&language=${navigator.language}`;
+           if (data.period === 'monthly') url += `&month=${data.month}`;
+           window.open(url, '_blank');
+           });
+       }
+    }
+
+  });
+  </script>
+</body>
+</html>

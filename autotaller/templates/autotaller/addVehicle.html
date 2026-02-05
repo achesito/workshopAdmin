@@ -1,0 +1,380 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{%static '/autotaller/normalize.css'%}?v={{ version }}">
+    <link rel="stylesheet" href="{%static '/autotaller/addVehicle.css'%}?v={{ version }}">
+    <script src="{%static 'autotaller/js/addImg.js'%}"></script>
+    <link rel="stylesheet" href="{%static 'autotaller/header.css' %}">
+    <script src="{%static 'autotaller/js/loadVehiculo.js'%}"></script>
+    <script src="{%static 'autotaller/js/getImage.js'%}"></script>
+    <script src="{%static 'autotaller/js/getCustomer.js'%}"></script>
+    <script type="module" src="{%static 'autotaller/js/getVehicle.js'%}"></script>
+    <script src="{%static 'autotaller/js/getCustomInits.js'%}"></script>
+    <script src="{%static 'autotaller/js/getCustomerVehicle.js'%}"></script>
+    <title>vehiculo nuevo</title>
+</head>
+<body>
+    <header>
+    <div class="header-display">
+            <div class="options">
+                <nav class="nav-options">
+                        <ul class="ul-options">
+                            <li class="li-options" id="li-options0"><a href="/checkRegistration">Home</a></li>
+                            <li class="li-options" id="li-options1"><a href="/addMaintenance">add maintenance</a></li>
+                            <li class="li-options" id="li-options2"><a>add Vehicle</a></li>
+                            <li class="li-options" id="li-options3"><a href="/reports">create report</a></li>
+                            <li class="li-options" id="li-options4"><a href="/agenda">scheduled</a></li>
+                            <script>
+                                function removeMore(){
+                                    if (window.innerWidth > 1120){
+                                        document.getElementById('li-more').style.display = 'none';
+                                    }
+                                    else{
+                                        document.getElementById('li-more').style.display = 'block';
+                                    }
+                                }
+                                function load(){
+                                    const width = 840;
+                                    if (window.innerWidth <= 840 && document.getElementById('li-container').lastChild.textContent != "RESPONSABILIDAD"){
+                                        const div = document.createElement('div');
+                                        const a = document.createElement('a');
+                                    }
+                                    else{
+                                        if (window.innerWidth > 840 && document.getElementById('li-container').lastChild.textContent === "RESPONSABILIDAD"){
+                                            document.getElementById('li-container').lastChild.remove();
+                                        }
+                                    }
+                                }
+                                window.addEventListener("resize", removeMore);
+                                window.addEventListener("resize", load);
+                                document.addEventListener('DOMContentLoaded',load);
+                                document.addEventListener('DOMContentLoaded', ()=>{
+                                    let date = new Date();
+                                    document.getElementById('year').max = String(date.getFullYear());
+                                });
+                            </script>
+                            <script>
+                                document.getElementById('li-more').addEventListener('click', (event)=>{
+                                    document.getElementById('click-counter').textContent = (parseInt(document.getElementById('click-counter').textContent) + 1).toString();
+                                    const doc = document.getElementById('li-container');
+                                    const click_count = parseInt(document.getElementById('click-counter').textContent);
+                                    doc.classList.toggle('active');
+                                });
+                            </script>
+                            <script>
+                                const element = document.getElementById('li-more');
+                                const li = window.getComputedStyle(document.getElementById('li-more'));
+                                const observer = new MutationObserver(()=>{
+                                    if(li.display === 'none'){
+                                        document.getElementById('li-container').style.display = 'none';
+                                    }
+                                    else{
+                                        document.getElementById('li-container').style.display = 'flex';
+                                    }
+                                });
+                                observer.observe(element, {attributes : true});
+                            </script>
+                        </ul>
+                </nav>
+                <button class="responsive-button" id="responsive-button"></button>
+                <script>
+                    document.getElementById('responsive-button').addEventListener('click', function(){
+                        const menu = document.getElementById('responsive-menu');
+                        menu.classList.toggle('acti');
+                        document.getElementById('responsive-button').style.left = '100%';
+                    });
+                </script>
+                <div class="responsive-menu" id="responsive-menu">
+                    <button class="button-close-menu" id="button-close-menu"><i class="fa-solid fa-xmark"></i></button>
+                    <script>
+                        document.getElementById('button-close-menu').addEventListener('click', function(){
+                        const menu = document.getElementById('responsive-menu');
+                        menu.classList.toggle('acti');
+                        document.getElementById('responsive-button').style.left = '90%';
+                    });
+                    </script>
+                    <div class="responsive-structure" id="responsive-structure">
+                            <ul class="ul-structure" id="ul-structure">
+                                <li class="li-options-responsive" id="li1"><a href="/checkRegistration">home</a></li>
+                                <li class="li-options-responsive" id="li2"><a href="/addMaintenance">add maintenance</a></li>
+                                <li class="li-options-responsive" id="li3"><a href="/addVehicle">add vehicle</a></li>
+                            </ul>
+                    </div>
+                </div>
+        </div>
+    </header>
+    <section>
+        <div class="form__container">
+            <script>
+                let param = window.location.pathname;
+                let params = param.split('/');
+                const data = params[2];
+                const len = params.length;
+                if (len > 3){
+                    document.addEventListener('DOMContentLoaded', async()=>{
+                        await loadVehicleImage();
+                        document.getElementById('id_card').classList.add(document.getElementById('id_card').value);
+                    });
+                }
+            </script>
+            <div class="img__fields">
+                    <div class="img__input">
+                        <nav class="file__space">
+                            <div class="img__container"><img /></div>
+                        </nav>
+                        <label class="file__link" for="file__input1" aria-required="true">add photo</label>
+                        <input type="file" id="file__input1" class="file__input" accept="image/*" required/>
+                        <span id="url__text1" class="url__text">no photos</span>
+                        <script>
+                        document.getElementById('file__input1').addEventListener('change', ()=> {
+                            var input = document.getElementById('file__input1');
+                            var span = document.getElementById('url__text1');
+                            span.textContent = input.files.length > 0 ? input.files[0].name : "no direction";
+                        });
+                        </script>
+                    </div>
+                    <div class="img__input">
+                        <nav class="file__space">
+                            <div class="img__container"><img /></div>
+                        </nav>
+                        <label class="file__link" for="file__input2" aria-required="true">add photo</label>
+                        <input type="file" id="file__input2" class="file__input" accept="image/*" required/>
+                        <span id="url__text2" class="url__text">no photos</span>
+                    <script>
+                        document.getElementById('file__input2').addEventListener('change', () =>{
+                            var input = document.getElementById('file__input2');
+                            var span = document.getElementById('url__text2');
+                            span.textContent = input.files.length > 0 ? input.files[0].name : "no direction";
+                        });
+                    </script>
+                </div>
+                <div class="img__input">
+                    <nav class="file__space">
+                        <div class="img__container"><img /></div>
+                    </nav>
+                    <label class="file__link" for="file__input3">add photo</label>
+                    <input type="file" id="file__input3" class="file__input" accept="image/*" required/>
+                    <span id="url__text3" class="url__text">no photos</span>
+                    <script>
+                        document.getElementById('file__input3').addEventListener('change', () =>{
+                            var input = document.getElementById('file__input3');
+                            var span = document.getElementById('url__text3');
+                            span.textContent = input.files.length > 0 ? input.files[0].name : "no direction";
+                        } );
+                    </script>
+                </div>
+                <div class="img__input">
+                    <nav class="file__space">
+                        <div class="img__container"><img /></div>
+                    </nav>
+                    <label class="file__link" for="file__input4" aria-required="true">add photo</label>
+                    <input type="file" id="file__input4" class="file__input" accept="image/*" required/>
+                    <span id="url__text4" class="url__text">no photos</span>
+                    <script>
+                        document.getElementById('file__input4').addEventListener('change', () =>{
+                            var input = document.getElementById('file__input4');
+                            var span = document.getElementById('url__text4');
+                            span.textContent = input.files.length > 0 ? input.files[0].name : "no direction";
+                        } );
+                    </script>
+                </div>
+            </div>
+            <form class="form__vehicle" method="post" id="form__vehicle" enctype="multipart/form-data">
+                {% csrf_token %}
+                <meta name="csrf_token" content="{{ csrf_token }}">
+                <div class="form__sec sec1">
+                    <fieldset class="fieldset__form">
+                        <h2>customer's registration</h2>
+                        <input type="text" id="licence" class="vehicle__input licence" placeholder="document type" maxlength="30" required>
+                    </fieldset>
+                    <fieldset class="fieldset__form">
+                        <input type="text" id="name" class="vehicle__input name" placeholder="name customer" maxlength="50" required>
+                    </fieldset>
+                    <fieldset class="fieldset__form">
+                        <input type="email" id="mail" class="vehicle__input mail" placeholder="customer mail" maxlength="80" required>
+                    </fieldset>
+                    <fieldset class="fieldset__form">
+                        <input type="text" id="id_card" class="vehicle__input id_card" placeholder="id card Customer" maxlength="20" minlength="1" required>
+                        <ul class="id__Container" id="idContainer">
+                            <li class="real__id idCard1"></li>
+                            <li class="real__id idCard2"></li>
+                            <li class="real__id idCard3"></li>
+                        </ul>
+                    </fieldset>
+                </div>
+                <div class="form__sec sec2">
+                    <fieldset class="fieldset__form">
+                        <input type="number" id="year" class="vehicle__input year" placeholder="vehicle year" min="1960" max="2025" required>
+                    </fieldset>
+                    <fieldset class="fieldset__form">
+                        <input type="text" class="vehicle__input plate" id="plate" maxlength="10" placeholder="plate car" required>
+                    </fieldset>
+                    <fieldset class="fieldset__form">
+                        <select class="vehicle__input transmition" id="transmition" required>
+                            <option class="trans__option">automatic</option>
+                            <option class="trans__option">standard</option>
+                        </select>
+                    </fieldset>
+                    <fieldset class="fieldset__form">
+                        <textarea class="vehicle__input modelo" id="engine" maxlength="80" placeholder="engine info" required></textarea>
+                    </fieldset>
+                    <fieldset class="fieldset__form">
+                        <input type="text" class="vehicle__input plate" id="color" maxlength="20" placeholder="color" required>
+                    </fieldset>
+                    <fieldset class="fieldset__form" id="dist">
+                        <input type="text" class="vehicle__input" id="distance" maxlength="30" placeholder="distance traveled" required>
+                        <select id="unity">
+                            <option>mile</option>
+                            <option>km</option>
+                        </select>
+                    </fieldset>
+                    <fieldset class="fieldset__form">
+                        <input type="text" class="vehicle__input" id="model" maxlength="20" placeholder="model name" required>
+                    </fieldset>
+                    <fieldset class="fieldset__form">
+                        <script>
+                            document.getElementById('unity').addEventListener('change', (e)=>{
+                                if (document.getElementById('unity').value === 'mile' && isNaN(document.getElementById('distance').value) === false) document.getElementById('distance').value = String(parseFloat(parseFloat(document.getElementById('distance').value) / 1.60934).toFixed(2));
+                                else{
+                                    if(isNaN(document.getElementById('distance').value) === false) document.getElementById('distance').value = String(parseFloat(parseFloat(document.getElementById('distance').value) * 1.60934).toFixed(2));
+                                }
+                            });
+                        </script>
+                        <script>
+                            let num = 0;
+                            async function setId(){
+                                let list = await getCustoms(String(document.getElementById('id_card').value));
+                                if (document.getElementById('id_card').value.length){
+                                    for (let n = 0; n < list.length; n++){
+                                        document.getElementById('idContainer').children[n].textContent = String(list[n].id_card);
+                                        document.getElementById('platescontainer').style.border = '1px solid #000';
+                                    }
+                                }
+                                num = 0;
+                                document.getElementById('idContainer').addEventListener('click',(e)=> {
+                                    if (e.target.classList.contains('real__id') && num < 1){
+                                        document.getElementById('id_card').value = e.target.textContent;
+                                        num +=1;
+                                        document.querySelectorAll('.real__id').forEach(il => il.textContent = '');
+                                        document.getElementById('licence').value = list[parseInt(e.target.classList[1][6]) - 1].documentType;
+                                        document.getElementById('name').value = list[parseInt(e.target.classList[1][6]) - 1].name;
+                                        document.getElementById('mail').value = list[parseInt(e.target.classList[1][6]) - 1].mail;
+                                        document.getElementById('idContainer').style.border = '0px';
+                                    }
+                                });
+                            }
+                            document.getElementById('id_card').addEventListener('input', (e)=>{
+                                document.getElementById('idContainer').childNodes.forEach(il => il.textContent = '');
+                                setId();
+                            });
+                        </script>
+                        <script>
+                            document.getElementById('form__vehicle').addEventListener('submit', async(e)=>{
+                                let newImg = 0;
+                                let identifier = document.getElementById('id_card').classList[2];
+                                let licence = document.getElementById('licence').value;
+                                let Name = document.getElementById('name').value;
+                                let Mail = document.getElementById('mail').value;
+                                let idCard = document.getElementById('id_card').value;
+                                let Year = document.getElementById('year').value;
+                                let Plate = document.getElementById('plate').value;
+                                let color = document.getElementById('color').value;
+                                let dist = String(document.getElementById('distance').value) + " " + String(document.getElementById('unity').value);
+                                let Engine = document.getElementById('engine').value;
+                                let Model = document.getElementById('model').value;
+                                let Transmition = document.getElementById('transmition').value;
+                                const Customer = {
+                                    name : Name,
+                                    id_card : idCard,
+                                    mail : Mail,
+                                    documentType : licence
+                                };
+                                const Vehicle = {
+                                    year: Year,
+                                    color : color,
+                                    engine_info :Engine,
+                                    distance : dist,
+                                    plate : Plate,
+                                    model : Model,
+                                    transmition : Transmition
+                                };
+                                const custVehicle = {
+                                    customer : idCard,
+                                    vehicle : Plate
+                                };
+                                //para que la solicitud se pueda enviar y recibir(la respuesta) al 100%
+                                e.preventDefault();
+                                let method = "";
+                                let id = idCard;
+                                let id1 = Plate;
+                                let id2 = "";
+                                if (len > 3){
+                                    method = 'PUT';
+                                    id = idCard;
+                                    id1 = Plate;
+                                    id2 = await getImages(Plate);
+                                }
+                                else{
+                                    method = 'POST';
+                                }
+                                let val = 0;
+                                for (let i = 0; i < 4; i++){
+                                    var input = document.getElementById('file__input' + String(i + 1));
+                                    if (input.files.length === 0 && id2.length < 1){
+                                        val += 1;
+                                        break;
+                                    }
+                                }
+                                if (val < 4){
+                                    const resCustomer = await addCustomer(Customer, id);
+                                    const respVehiculo = await addVehicle(Vehicle, method, id1);
+                                    if (resCustomer != 204 && resCustomer != 201 && resCustomer != 200 && respVehiculo != 200){
+                                        document.getElementById('error__message1').style.display = 'inline-block';
+                                    }
+                                    if (resCustomer != 400){
+                                        e.preventDefault();
+                                        for (let i = 0; i < 4; i++){
+                                            var input = document.getElementById('file__input' + String(i + 1));
+                                            var form = new FormData();
+                                            form.append('vehicle', Plate);
+                                            if (input.files.length > 0){
+                                                form.append('photoUrl', input.files[0]);
+                                                newImg += 1
+                                            }
+                                            if (len > 3){
+                                                if (input.files.length > 0){
+                                                    let a = await addImg(form, 'POST');
+                                                }
+                                                //no funciona porque no hay cargas en los input (addImg())
+                                                if (document.getElementById('id_card').value != identifier) await addCustVehicle(custVehicle);
+                                            }
+                                            else{
+                                                if (input.files.length > 0) await addImg(form, method);
+                                                await addCustVehicle(custVehicle);
+                                            }
+                                        }
+                                        /*for (let i = 0; i< newImg; i++){
+                                            await addImg(form, method, id2[i].idPhoto);
+                                        }*/
+                                        window.location.reload();
+                                    }
+                                }
+                                else{
+                                    document.getElementById('error__message1').textContent = "one photo at least is mandatory";
+                                    document.getElementById('error__message1').style.display = 'inline-block';
+                                }
+                            });
+                        </script>
+                        <span class="error__message" id="error__message1">this mail is already signed</span>
+                        <span class="error__message" id="error__message2">images are mandatory</span>
+                        <input type="submit" value="guardar" class="vehicle__input vehicle__send" />
+                    </fieldset>
+                </div>
+            </form>
+        </div>
+    </section>
+</body>
+</html>

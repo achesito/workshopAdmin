@@ -1,0 +1,770 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>manage products</title>
+    <link rel="stylesheet" href="{%static '/autotaller/normalize.css'%}?v={{ version }}">
+    <link rel="stylesheet" href="{%static '/autotaller/inventory.css'%}?v={{ version }}">
+    <link rel="stylesheet" href="{%static '/autotaller/filterBox.css'%}?v={{ version }}">
+    <link rel="stylesheet" href="{%static 'autotaller/header.css' %}">
+    <script src="{%static '/autotaller/js/addInventory.js'%}"></script>
+    <script type="module" src="{%static 'autotaller/js/addmaintenance/getSpares.js'%}"></script>
+    <script src="{%static 'autotaller/js/addmaintenance/getSpareCode.js'%}"></script>
+    <script type="module" src="{%static 'autotaller/js/getStuff.js'%}"></script>
+    <script src="{%static 'autotaller/js/getAnySpareName.js'%}"></script>
+    <script src="{%static 'autotaller/js/addButtons.js'%}"></script>
+    <script src="{%static 'autotaller/js/delete.js'%}"></script>
+</head>
+<body>
+    <script>
+        function removeAll(){
+            let len = document.getElementById('model__post').children.length;
+            document.getElementById('input1').value = "";
+            document.getElementById('input2').value = "";
+            for (let i = 1; i < len; i++){
+                //solo asi se eliminan exactamente los nuevos
+                document.getElementById('model__post').children[1].remove();
+            }
+        }
+        function showElements(selected){
+            removeAll();
+            if (selected === 'spares' || selected === 'Repuestos'){
+                document.getElementById('input1').placeholder = 'spare name';
+                document.getElementById('input2').placeholder = "set spare's details";
+                for (let i = 0; i < 3; i++){
+                    let field = document.createElement('fieldset');
+                    let input, input1, select;
+                    input = document.createElement('input');
+                    //solo funcionara asi
+                    select  = document.createElement('select');
+                    if (i === 0){
+                        input.type = 'number';
+                        input.step = '0.01';
+                        input.max = '999';
+                        input.min = '0';
+                        input.placeholder = 'set price';
+                        input.maxLength = '5';
+                        input.required = true;
+                        input.className = 'input__data';
+                        input.id = 'input' + String((2*i) + 3);
+                        select.className = 'input__data';
+                        select.classList.add("selectInput");
+                        field.appendChild(select);
+                        select.id = 'input' + String((2*i) + 4);
+                    }
+                    else{
+                        if (i === 1){
+                            let buton = document.createElement('button');
+                            let buton_cancel = document.createElement('button');
+                            buton.className = 'button__form';
+                            buton_cancel.className = 'button__form';
+                            buton.id = 'save__button';
+                            buton_cancel.id = 'cancel__button';
+                            buton.textContent = 'save';
+                            buton_cancel.textContent = 'cancel';
+                            buton_cancel.type = 'button';
+                            field.appendChild(buton);
+                            field.appendChild(buton_cancel);
+                        }
+                    }
+                    if(i === 0) field.appendChild(input);
+                    field.className = "fieldset__data";
+                    field.classList.add('fieldset__space');
+                    document.getElementById('model__post').appendChild(field);
+                }
+            }
+            else if (selected === 'providers' || selected === 'Proveedores'){
+                removeAll();
+                let inp1 = document.getElementById('input1');
+                let inp2 = document.getElementById('input2');
+                inp1.maxLength = '40';
+                inp2.maxLength = '50';
+                inp1.placeholder = "provider's name";
+                inp2.placeholder = 'country name';
+                for (let i = 0; i < 3; i++){
+                    let field = document.createElement('fieldset');
+                    let inp3 = document.createElement('input');
+                    let inp4 = document.createElement('input');
+                    if (i === 0){
+                        inp3.type = 'text'; 
+                        inp3.maxLength = '70';
+                        inp3.required = true;
+                        inp3.placeholder = "provider's seat";
+                        inp3.className = 'input__data';
+                        inp4.type = 'text';
+                        inp4.maxLength = '80';
+                        inp4.required = true;
+                        inp4.placeholder = "phone number";
+                        inp4.className = 'input__data';
+                        inp3.id = 'input' + String((2*i) + 3);
+                        inp4.id = 'input' + String((2*i) + 4);
+                    }
+                    else{
+                        if (i === 1){
+                            let buton = document.createElement('button');
+                            let buton_cancel = document.createElement('button');
+                            buton.className = 'button__form';
+                            buton_cancel.className = 'button__form';
+                            buton.id = 'save__button';
+                            buton_cancel.id = 'cancel__button';
+                            buton.textContent = 'save';
+                            buton_cancel.textContent = 'cancel';
+                            buton_cancel.type = 'button';
+                            field.appendChild(buton);
+                            field.appendChild(buton_cancel);
+                        }
+                    }
+                    if (i === 0){
+                        field.appendChild(inp4);
+                        field.append(inp3);
+                    }
+                    field.className = "fieldset__data";
+                    field.classList.add('fieldset__space');
+                    document.getElementById('model__post').appendChild(field);
+                }
+            }
+            else if (selected === 'categories' || selected === 'Categorías'){
+                removeAll();
+                let field1 = document.createElement('fieldset');
+                let field2 = document.createElement('fieldset');
+                let inp1 = document.getElementById('input1');
+                let inp2 = document.getElementById('input2');
+                inp1.maxLength = '60';
+                inp2.maxLength = '70';
+                inp1.placeholder = "categorie's name";
+                inp2.placeholder = 'categorie type';
+                let inp3 = document.createElement('input');
+                inp3.type = 'text';
+                inp3.maxLength = '40';
+                inp3.required = true;
+                inp3.placeholder = 'categorie details';
+                inp3.classList.add('input__data');
+                inp3.classList.add('last__input');
+                inp3.id = 'input3';
+                let buton = document.createElement('button');
+                let buton_cancel = document.createElement('button');
+                buton.className = 'button__form';
+                buton_cancel.className = 'button__form';
+                buton.id = 'save__button';
+                buton_cancel.id = 'cancel__button';
+                buton.textContent = 'save';
+                buton_cancel.textContent = 'cancel';
+                buton_cancel.type = 'button';
+                field1.className = "fieldset__data";
+                field1.appendChild(inp3);
+                field2.className = "fieldset__data";
+                field2.appendChild(buton);
+                field2.appendChild(buton_cancel);
+                field2.classList.add('fieldset__space');
+                document.getElementById('model__post').appendChild(field1);
+                document.getElementById('model__post').appendChild(field2);
+            }
+            else{
+                removeAll();
+                for (let n = 0; n < 2; n++){
+                    document.querySelector('.fieldset__data').children[0].remove();
+                }
+                let meta = new Date().toLocaleDateString("en-CA");
+                let field1 = document.createElement('fieldset');
+                let field2 = document.createElement('fieldset');
+                let field3 = document.createElement('fieldset');
+                let dataField = document.createElement('div');
+                dataField.className = 'spare__found';
+                let name = document.createElement('div');
+                name.className = 'name__space';
+                name.id = 'spare__names';
+                let inp1 = document.createElement('input');
+                inp1.id = 'input1';
+                inp1.placeholder = 'set spare name';
+                inp1.required = true;
+                inp1.className = 'input__data';
+                setSpace(inp1, name);
+                dataField.appendChild(inp1);
+                dataField.appendChild(name);
+                let inp2 = document.createElement('input');
+                inp2.id = 'input2';
+                inp2.maxLength = '40';
+                inp2.required = true;
+                inp2.placeholder = 'provider name';
+                inp2.className = 'input__data';
+                inp2.required = true;
+                let inp3 = document.createElement('input');
+                inp3.type = 'date';
+                inp3.required = true;
+                inp3.classList.add('input__data');
+                inp3.id = 'input3';
+                inp3.max = meta;
+                let inp4 = document.createElement('input');
+                inp4.type = 'number';
+                inp4.min = '1';
+                inp4.max = '20';
+                inp4.required = true;
+                inp4.classList.add('input__data');
+                inp4.id = 'input4';
+                inp4.placeholder = 'quantity';
+                let inp5 = document.createElement('textarea');
+                inp5.required = false;
+                inp5.classList.add('input__data');
+                inp5.classList.add('last__input');
+                inp5.id = 'input5';
+                inp5.placeholder = "set any description (optional)";
+                let buton = document.createElement('button');
+                let buton_cancel = document.createElement('button');
+                buton.className = 'button__form';
+                buton_cancel.className = 'button__form';
+                buton.id = 'save__button';
+                buton.classList.add('save__button');
+                buton_cancel.id = 'cancel__button';
+                buton.textContent = 'save';
+                buton_cancel.textContent = 'cancel';
+                buton_cancel.type = 'button';
+                field1.className = "fieldset__data";
+                field1.appendChild(inp3);
+                field1.appendChild(inp4);
+                field2.className = "fieldset__data";
+                field2.appendChild(inp5);
+                field2.appendChild(buton_cancel);
+                field3.className = 'fieldset__data';
+                field3.appendChild(buton);
+                field3.appendChild(buton_cancel);
+                field3.classList.add('fieldset__space');
+                document.getElementById('fieldset__data').appendChild(dataField);
+                document.getElementById('fieldset__data').appendChild(inp2);
+                document.getElementById('model__post').appendChild(field1);
+                document.getElementById('model__post').appendChild(field2);
+                document.getElementById('model__post').appendChild(field3);
+            }
+        }
+    </script>
+    <div class="add__layer" id="add__layer">
+        <div class="add__elements">
+            {% csrf_token %}
+            <meta name="csrf_token" content="{{ csrf_token }}">
+            <nav class="title__data">
+                <div class="div__data1">new element</div>
+                <div class="div__data2">add or update all fields here</div>
+            </nav>
+            <form id="model__post" class="model__post" action="post" enctype="multipart/form-data">
+                <fieldset class="fieldset__data" id="fieldset__data">
+                    <input type="text" class="input__data" id="input1" maxlength="50" required="true" placeholder="spare name"/>
+                    <input type="text" class="input__data" id="input2"  maxlength="100" required="true" placeholder="spare details"/>
+                </fieldset>
+            </form>  
+        </div>
+        <div class="filters-box" id="filters-box">
+            <div class="box-line box-close">
+                <button class="but-close" id="but-close">X</button>
+            </div>
+            <div class="box-line box-title">
+                Search by
+            </div>
+            <div class="arrival-filter" id="arrival-filter">
+                <div class="box-line">
+                    <div>
+                        <span class="span-range">set price limits</span>
+                        <span id="range-price" class="span-range">click here to set none</span>
+                        <div class="input-range">
+                            <input type="number" class="quantity-range arrival-quant" id="min2" min="1" max="" value="1"/>
+                            <input type="number" class="quantity-range arrival-quant quantity-right" id="max2" min="1" value="1" />
+                        </div>
+                    </div>
+                    <div>
+                        <span>set spare name</span>
+                        <input type="text" id="spare_name" class="filter-field spare_name">
+                    </div>
+                </div>
+                <div class="box-line belowSection">
+                    <div>
+                        <span >select beginning date</span>
+                        <input type="date" id="date-begin" class="filter-field" placeholder="date" />
+                    </div>
+                    <div>
+                        <span id="span4">select end date</span>
+                        <input type="date" class="filter-field" id="date-to" placeholder="date">
+                    </div>
+                </div>
+                <div class="box-line belowSection">
+                    <div class="box-container">
+                        <span>set provider name</span>
+                        <input type="text" class="modelInput" id="provider-name" placeholder="model" />
+                    </div>
+                </div>
+                <div class="box-line belowSection">
+                    <button class="button-field">send</button>
+                </div>
+            </div>
+            <div class="spare-filter" id="spare-filter">
+                <div class="box-line">
+                    <div>
+                        <span class="span-range">set price limits</span>
+                        <span id="range-price" class="span-range">click here to set none</span>
+                        <div class="input-range">
+                            <input type="number" class="quantity-range " id="min" min="1" max="" value="1"/>
+                            <input type="number" class="quantity-range quantity-right" id="max" min="1" value="1" />
+                        </div>
+                    </div>
+                </div>
+                <div class="box-line belowSection">
+                    <div class="box-container">
+                        <span id="span3">select type of categorie</span>
+                        <select name="" id="select-typeCategorie" class="modelInput"></select>
+                    </div>
+                </div>
+                <div class="box-line belowSection">
+                    <div class="box-container">
+                        <span id="span4">select categorie</span>
+                        <select name="" id="select-categorie" class="modelInput"></select>
+                    </div>
+                </div>
+                <div class="box-line belowSection">
+                    <button class="button-field">send</button>
+                </div>
+            </div>
+        </div>
+        <div class="confirmDelete" id="confirmDelete">
+            <p class="titleDelete confirmSection">Are you sure you want to delete this element? 
+                this will also delete all related data</p>
+            <div class="confirmSection">
+                <button class="confirmation-button" id="lastDelete">Delete</button>
+                <button class="confirmation-button" id="cancelDelete">cancel</button>
+            </div>
+        </div>
+        <script>
+            document.getElementById('cancelDelete').addEventListener('click', ()=>{
+                document.getElementById('add__layer').classList.remove('show');
+                document.getElementById('filters-box').style.display = "block";
+                document.getElementById('confirmDelete').style.display = "none";
+            });
+            document.getElementById('lastDelete').addEventListener('click', async()=>{
+                let identifier = String(document.getElementById('model__select').dataset.id);
+                let data = String(document.getElementById('confirmDelete').dataset.id);
+                if (identifier === "spares"){
+                    let resp = await delSpare(data);
+                }
+                else if (identifier === "categories"){
+                    let resp = await delCategorie(data);
+                }
+                else{
+                    if(identifier === "providers"){
+                        let resp = await delProvider(data);
+                    }
+                }
+                window.location.href = "/inventory";
+            });
+        </script>
+        <script>
+            document.getElementById('but-close').addEventListener('click', ()=>{
+                hideLayer();
+            });
+            document.querySelectorAll('.span-range').forEach(e =>{
+                e.addEventListener('click', ()=>{
+                    if (document.getElementById('model__select').value === "spares" || document.getElementById('model__select').value === "Repuestos"){
+                        document.getElementById('max').value = "0";
+                        document.getElementById('min').value = "0";
+                        document.getElementById('max').min = "0";
+                    }
+                    else{
+                        document.getElementById('max2').value = "0";
+                        document.getElementById('min2').value = "0";
+                        document.getElementById('max2').min = "0";
+                    }
+                });
+            });
+        </script>
+    </div>
+    <script>
+        document.querySelectorAll('.button-field').forEach(e =>{
+            e.addEventListener('click', async(btn)=>{
+                if (document.getElementById('model__select').value === "spares" || document.getElementById('model__select').value === "Repuestos"){
+                    let data = new URLSearchParams({
+                        'entity' : document.getElementById('model__select').value,
+                        'typeCategorie' : document.getElementById('select-typeCategorie').value,
+                        'minPrice' : document.getElementById('min').value,
+                        'maxPrice' : document.getElementById('max').value,
+                        'categorie' : document.getElementById('select-categorie').value
+                    });
+                    window.location.href = `/inventory/spareFilter/?${data.toString()}`;
+                }
+                else{
+                    let data = new URLSearchParams({
+                        'entity' : document.getElementById('model__select').value,
+                        'minQuantity': document.getElementById('min2').value,
+                        'maxQuantity' : document.getElementById('max2').value,
+                        'spare' : document.getElementById('spare_name').value,
+                        'dateFrom' : document.getElementById('date-begin').value,
+                        'dateTo' : document.getElementById('date-to').value,
+                        'provider' : document.getElementById('provider-name').value
+                    });
+                    window.location.href = `/inventory/arrivalFilter/?${data.toString()}`;
+                }
+            });
+        });
+    </script>
+    <div class="details__space">
+        <div class="description__show">
+            <div class="close__description">
+                <button id="close__description">X</button>
+            </div>
+            <span class="description__field">description:</span>
+            <div class="description__area"></div>
+        </div>
+    </div>
+    <header>
+    <div class="header-display">
+            <div class="options">
+                <nav class="nav-options">
+                        <ul class="ul-options">
+                            <li class="li-options" id="li-options0"><a href="/checkRegistration">Home</a></li>
+                            <li class="li-options" id="li-options1"><a href="/addMaintenance">add maintenance</a></li>
+                            <li class="li-options" id="li-options2"><a href="/addVehicle">add Vehicle</a></li>
+                            <li class="li-options" id="li-options3"><a href="/reports">create report</a></li>
+                            <li class="li-options" id="li-options4"><a href="/agenda">scheduled</a></li>
+                            <script>
+                                function removeMore(){
+                                    if (window.innerWidth > 1120){
+                                        document.getElementById('li-more').style.display = 'none';
+                                    }
+                                    else{
+                                        document.getElementById('li-more').style.display = 'block';
+                                    }
+                                }
+                                function load(){
+                                    const width = 840;
+                                    if (window.innerWidth <= 840 && document.getElementById('li-container').lastChild.textContent != "RESPONSABILIDAD"){
+                                        const div = document.createElement('div');
+                                        const a = document.createElement('a');
+                                    }
+                                    else{
+                                        if (window.innerWidth > 840 && document.getElementById('li-container').lastChild.textContent === "RESPONSABILIDAD"){
+                                            document.getElementById('li-container').lastChild.remove();
+                                        }
+                                }
+                            }
+                                window.addEventListener("resize", removeMore);
+                                window.addEventListener("resize", load);
+                                document.addEventListener('DOMContentLoaded',load);
+                            </script>
+                            <script>
+                                document.getElementById('li-more').addEventListener('click', (event)=>{
+                                    document.getElementById('click-counter').textContent = (parseInt(document.getElementById('click-counter').textContent) + 1).toString();
+                                    const doc = document.getElementById('li-container');
+                                    const click_count = parseInt(document.getElementById('click-counter').textContent);
+                                    doc.classList.toggle('active');
+                                });
+                            </script>
+                            <script>
+                                const element = document.getElementById('li-more');
+                                const li = window.getComputedStyle(document.getElementById('li-more'));
+                                const observer = new MutationObserver(()=>{
+                                    if(li.display === 'none'){
+                                        document.getElementById('li-container').style.display = 'none';
+                                    }
+                                    else{
+                                        document.getElementById('li-container').style.display = 'flex';
+                                    }
+                                });
+                                observer.observe(element, {attributes : true});
+                            </script>
+                        </ul>
+                </nav>
+                <button class="responsive-button" id="responsive-button"></button>
+                <script>
+                    document.getElementById('responsive-button').addEventListener('click', function(){
+                        const menu = document.getElementById('responsive-menu');
+                        menu.classList.toggle('acti');
+                        document.getElementById('responsive-button').style.left = '100%';
+                    });
+                </script>
+                <div class="responsive-menu" id="responsive-menu">
+                    <button class="button-close-menu" id="button-close-menu"><i class="fa-solid fa-xmark"></i></button>
+                    <script>
+                        document.getElementById('button-close-menu').addEventListener('click', function(){
+                        const menu = document.getElementById('responsive-menu');
+                        menu.classList.toggle('acti');
+                        document.getElementById('responsive-button').style.left = '90%';
+                    });
+                    </script>
+                    <div class="responsive-structure" id="responsive-structure">
+                            <ul class="ul-structure" id="ul-structure">
+                                <li class="li-options-responsive" id="li1"><a href="/checkRegistration">home</a></li>
+                                <li class="li-options-responsive" id="li2"><a href="/addMaintenance">add maintenance</a></li>
+                                <li class="li-options-responsive" id="li3"><a href="/addVehicle">add vehicle</a></li>
+                            </ul>
+                    </div>
+                </div>
+        </div>
+    </header>
+    <section>
+        <script>
+            document.getElementById('model__post').addEventListener('submit', async(e)=>{
+                e.preventDefault();
+                if (document.getElementById('model__select').value === 'spares' || document.getElementById('model__select').value === 'Repuestos'){
+                    val = await addSpare();
+                    window.location.reload();
+                }
+                else if(document.getElementById('model__select').value === 'providers' || document.getElementById('model__select').value === 'Proveedores'){
+                    val = await addProvider();
+                    window.location.reload();
+                }
+                else if(document.getElementById('model__select').value === 'categories' || document.getElementById('model__select').value === 'Categorias'){
+                    val = await addCategorie();
+                    window.location.reload();
+                }
+                else{
+                    val = await addArrival();
+                    window.location.reload();
+                }
+            });
+        </script>
+        <nav class="buttons__nav">
+            <div class="elements">
+                <span>consult</span>
+                <div class="model__box">
+                    <select id="model__select" class="model__select">
+                        <option class="models">spares</option>
+                        <option class="models">providers</option>
+                        <option class="models">categories</option>
+                        <option class="models">arrivals</option>
+                    </select>
+                </div>
+            </div>
+            <div class="elements">
+                <button id="add__button" class="model__select">add register</button>
+                <button id="filter__button" class="model__select">set filters</button>
+            </div>
+            <script>
+                document.getElementById('min').addEventListener('input', ()=>{
+                    if (parseInt(document.getElementById('min').value) > parseInt(document.getElementById('max').value)){
+                        document.getElementById('min').value = document.getElementById('max').min;
+                    }
+                });
+                document.getElementById('min2').addEventListener('input', ()=>{
+                    if (parseInt(document.getElementById('min2').value) > parseInt(document.getElementById('max2').value)){
+                        document.getElementById('min2').value = document.getElementById('max2').min;;
+                    }
+                });
+                function createOptions(){
+                    let len = document.getElementById('select-categorie').children.length;
+                    for (let n = 0; n < len; n++){
+                        document.getElementById('select-categorie').lastChild.remove();
+                    }
+                    let elements = document.getElementById('select-typeCategorie')[document.getElementById('select-typeCategorie').selectedIndex].dataset.id.split("-");
+                    for (let n = 0; n < elements.length; n++){
+                        let opt = document.createElement("option");
+                        opt.textContent = elements[n];
+                        opt.value = elements[n];
+                        document.getElementById('select-categorie').append(opt);
+                    }
+                }
+                document.addEventListener('DOMContentLoaded', async()=>{
+                    let data = new URLSearchParams(window.location.search);
+                    let obj = Object.fromEntries(data.entries());
+                    if (obj.entity != "arrivals" && obj.entity != "Llegadas"){
+                        await editFilters(document.getElementById('model__select').value);
+                        createOptions();
+                    }
+                    else{
+                        document.getElementById('arrival-filter').style.display = "block";
+                        document.getElementById('spare-filter').style.display = "none";
+                    }
+                });
+                document.getElementById('filter__button').addEventListener('click', (e)=>{
+                    document.querySelector('.filters-box').style.display = 'block';
+                    document.querySelector('.add__elements').style.display = 'none';
+                    document.getElementById('confirmDelete').style.display = "none";
+                    showLayer();
+                });
+                
+                function CleanFields(){
+                    let element = document.getElementById('model__post').children.length;
+                    for (let i = 0; i < (element - 1); i++){
+                        document.getElementById('model__post').children[i].childNodes.forEach(el => el.value = "");
+                    }
+                }
+                function showLayer(){
+                    document.querySelector('.add__layer').classList.toggle('show');
+                }
+                function hideLayer(){
+                    document.querySelector('.add__layer').classList.remove('show');
+                    document.getElementById('model__post').classList.remove('updating');
+                    document.getElementById('model__post').classList.remove('show');
+                    CleanFields();
+                }
+                document.getElementById('add__button').addEventListener('click', ()=>{
+                    document.querySelector('.add__elements').style.display = 'block';
+                    document.querySelector('.filters-box').style.display = 'none';
+                    document.getElementById('confirmDelete').style.display = "none";
+                    showLayer();
+                });
+                document.addEventListener('click', (e)=>{
+                    if (e.target.classList.contains('remove__button') === true){
+                        document.getElementById('confirmDelete').style.display = "block";
+                        document.querySelector('.add__elements').style.display = 'none';
+                        document.querySelector('.filters-box').style.display = 'none';
+                        document.getElementById('confirmDelete').setAttribute('data-id', String(e.target.dataset.id));
+                        showLayer();
+                    }
+                });
+                document.querySelector('.add__layer').addEventListener('click',(e)=>{
+                    if (e.target.classList[0] === 'add__layer' || e.target.id === 'cancel__button'){
+                        hideLayer();
+                    }
+                });
+                document.getElementById('select-typeCategorie').addEventListener('change', ()=>{
+                    createOptions();
+                });
+            </script>
+        </nav>
+    </section>
+    <script>
+        function removeTable(){
+            let container = document.getElementById('element__container');
+            let len = container.children.length;
+            for (let i = 0; i < len; i++){
+                container.children[0].remove();
+            }
+        }
+    </script>
+    <script>
+        document.getElementById('model__select').addEventListener('change', ()=>{
+            let position = window.location.pathname.split('/').length > 3 ? 3 : 2;
+            let element = window.location.pathname.split('/').slice(0, 2);
+            let str = element.join('/');
+            let data = new URLSearchParams({
+                'entity' : document.getElementById('model__select').value,
+                'start' : "0"
+            });
+            window.location.href = str + `?${data.toString()}`;
+        });
+    </script>
+    <script>
+        async function setOptions(){
+            let resp = await getTypes();
+            for (let i = 0; resp.length; i++){
+                for (let j = 0; j < resp[i][1].length; j++){
+                    let opt = document.createElement('option');
+                    opt.textContent = resp[i][1][j];
+                    opt.value = resp[i][1][j];
+                    document.getElementById('input4').append(opt);
+                }
+            }
+        }
+
+
+    async function displayElements(){
+        showElements(document.getElementById('model__select').value);
+        if (document.getElementById('model__select').value === "spares" || document.getElementById('model__select').value === "Repuestos"){
+           setOptions();
+        }
+        document.getElementById('model__select').addEventListener('change', async()=>{
+            document.getElementById('filter__button').style.display = "block";
+            showElements(document.getElementById('model__select').value);
+            await editFilters(document.getElementById('model__select').value);
+        });
+    }
+    document.addEventListener('DOMContentLoaded', displayElements);
+    </script>
+    </script>
+    <script>
+    </script>
+    <section>
+        <h1 id="title1">No register currently</h1>
+        <div class="element__container" id="element__container">
+            <div class="element__grid" id="element__grid">
+
+            </div>
+        </div>
+        <div class="buttons__sec" id="buttons__sec">
+            <button class="arrows buttons__page" id="previous-arrow"><</button>
+        </div>
+    </section>
+    <script>
+        document.getElementById('close__description').addEventListener('click', ()=>{
+            document.querySelector('.details__space').classList.remove('show');
+            document.querySelector('.description__show').classList.toggle('show');
+        })
+        document.getElementById('element__container').addEventListener('click', (e)=>{
+            if (e.target.classList[0] === 'button__element'){
+                document.querySelector('.description__area').textContent = e.target.dataset.id;
+                document.querySelector('.details__space').classList.toggle('show');
+                document.querySelector('.description__show').classList.toggle('show');
+            }
+        });
+    </script>
+    <script>
+        document.getElementById('element__container').addEventListener('click', (e)=>{
+            if (e.target.classList[0] === 'edit__button' && document.getElementById('model__post').classList.contains('show') === false){
+                //posible eliminacion
+                document.getElementById('filters-box').style.display = "none";
+                document.getElementById('confirmDelete').style.display = "none";
+                document.getElementById('model__post').classList.toggle('show');
+                document.querySelector('.add__elements').style.display = 'block';
+                setFields(e.target);
+            }
+            document.getElementById('model__post').classList.toggle('updating');
+        });
+        //enviar los datos del elemento 
+        async function setFields(element) {
+            let data;
+            if (document.getElementById('model__select').value === 'spares' || document.getElementById('model__select').value === 'Repuestos'){
+                //obtener el element grid dueño del boton edit en cuestion
+                let contain = element.closest('.element__grid');
+                for (let n = 0; n < contain.children.length; n++){
+                    if (n === 6){
+                        data = contain.children[n].children[0].getAttribute('data-id');
+                    }
+                }
+                showLayer();
+                document.getElementById('model__post').setAttribute('data-id', data);
+                model = await getByCode(data);
+                document.getElementById('input1').value = model.name;
+                document.getElementById('input2').value = model.details;
+                document.getElementById('input3').value = model.price;
+                document.getElementById('input4').value = model.categorie;
+                document.getElementById('input4').readOnly = true;
+            }
+            else if(document.getElementById('model__select').value === 'providers' || document.getElementById('model__select').value === 'Proveedores'){
+                let contain = element.closest('.element__grid');
+                for (let n = 0; n < contain.children.length; n++){
+                    if (n === 5){
+                        data = contain.children[n].children[0].getAttribute('data-id');
+                    }
+                }
+                showLayer();
+                document.getElementById('model__post').setAttribute('data-id', data);
+                model = await getProviderByCode(data);
+                document.getElementById('input1').value = model.name;
+                document.getElementById('input2').value = model.country;
+                document.getElementById('input3').value = model.ubication;
+                document.getElementById('input4').value = model.phone_number;
+            }
+            else{
+                let contain = element.closest('.element__grid');
+                for (let n = 0; n < contain.children.length; n++){
+                    if (n === 0){
+                        data = contain.children[n].textContent;
+                    }
+                }
+                showLayer();
+                document.getElementById('model__post').setAttribute('data-id', data);
+                model = await getCategory(data);
+                document.getElementById('input1').value = model.name;
+                document.getElementById('input2').value = model.type;
+                document.getElementById('input3').value = model.details;
+            }
+        }
+        function clean(){
+            let grid = document.getElementById('buttons__sec');
+            let quantity = grid.children.length;
+            for (let i = 0; i < quantity; i++){
+                if (grid.lastChild.id != "previous-arrow" && grid.children.length > 1 ){
+                    grid.lastChild.remove();
+                }
+            }
+            grid.style.display = "none";
+        }
+    </script>
+</body>
+</html>

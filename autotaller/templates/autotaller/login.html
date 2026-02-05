@@ -1,0 +1,59 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'autotaller/normalize.css' %}?v={{ version }}">
+    <link rel="stylesheet" href="{%static 'autotaller/login_style.css' %}?v={{ version }}">
+    <script src="{%static 'autotaller/js/InsertUsuario.js'%}"></script>
+    <title>login</title>
+</head>
+<body>
+    <section class="main__section">
+            <nav class="nav__form">
+                <div class="form__container">
+                    <div class="workshop__info">
+                        <h2>workshop admin</h2>
+                        <p>Welcome to workshop admin, a project builded and 
+                           developed by achesito with some tools and implementations
+                           to make workshops tasks easier and to record all important
+                           information from customers. You can use this project for several
+                           contexts, included entrepreneurship or student project. 
+                           Make sure to use this software product wisely,
+                           cause all this technologies and functionalities are all 
+                           under your responsability
+                        </p>
+                    </div>
+                    <form id="form__login" class="form__login" method="post">
+                        {%csrf_token%}
+                        <meta name="csrf_token" content="{{ csrf_token }}">
+                        <h2>Sign in</h2>
+                        <span class="text__span">*all fields are mandatory*</span>
+                       <fieldset class="form__fieldset">
+                        <label>
+                            <input type="text" id="input__user" name="userName" class="fieldset__input" placeholder="enter your user" required/>
+                        </label>
+                       </fieldset>
+                       <fieldset class="form__fieldset">
+                        <label>
+                            <input type="password" id="input__password" name="password" class="fieldset__input" placeholder="enter your password" required/>
+                        </label>
+                       </fieldset>
+                       <fieldset class="form__fieldset fieldset__sign">
+                        <span>don't have account? <a href="/signUp/">registrate</a></span>
+                       </fieldset>
+                       <fieldset class="form__fieldset">
+                        <label>
+                            <input type="submit" id="form__log" class="fieldset__input input__login" value="sign in"/>
+                        </label>
+                       </fieldset>
+                    </form>
+                </div>
+            </nav>
+    </section>
+    <script>
+    </script>
+</body>
+</html>

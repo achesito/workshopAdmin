@@ -1,0 +1,492 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{%static '/autotaller/normalize.css'%}?v={{ version }}">
+    <link rel="stylesheet" href="{%static '/autotaller/checkRegistration.css'%}?v={{ version }}">
+    <link rel="stylesheet" href="{%static '/autotaller/filterBox.css'%}?v={{ version }}">
+    <script type="module" src="{% static 'autotaller/js/getMaintenances.js'%}"></script>
+    <script src="{% static 'autotaller/js/getImage.js'%}"></script>
+    <script type="module" src="{% static 'autotaller/js/getVehicle.js'%}"></script>
+    <script src="{% static 'autotaller/js/delete.js'%}"></script>
+    <script type="module" src="{% static 'autotaller/js/findVehicle.js'%}"></script>
+    <script src="{%static 'autotaller/js/futureMaints.js'%}"></script>
+    <script src="{%static 'autotaller/js/addButtons.js'%}"></script>
+    <script type="module" src="{% static 'autotaller/js/getVehicles.js'%}"></script>
+    <script type="module" src="{% static 'autotaller/js/paginate.js'%}"></script>
+    <script src="{% static 'autotaller/js/addUsuario.js'%}"></script>
+    <title>consult registration maintenance/vehicle</title>
+</head>
+<body>
+    <div class="layer1" id="layer1">
+        <div class="filters-box" id="filters-box">
+            <div class="box-line box-close">
+                <button class="but-close" id="but-close">X</button>
+            </div>
+            <script>
+                document.getElementById('but-close').addEventListener('click', ()=>{
+                    document.getElementById('layer1').style.display = "none";
+                });
+            </script>
+            <div class="box-line box-title">
+                Search by
+            </div>
+            <div class="box-line">
+                <div>
+                    <span id="span1">select total for service</span>
+                    <select class="filter-field" id="select-cost">
+                        <option value="0-100" class="filter">between 0 and 100</option>
+                        <option value="100-300" class="filter">between 100 and 300 </option>
+                        <option value="300-600" class="filter">between 300 and 600</option>
+                        <option value="600" class="filter">over 600</option>
+                        <option value="any" class="filter">any</option>
+                    </select>
+                </div>
+                <div>
+                    <span id="span2">select type</span>
+                    <select class="filter-field" id="select-type">
+                    <option value="preventive">preventive</option>
+                    <option value="corrective">corrective</option>
+                    <option value="any">any</option>
+                </select>
+                </div>
+            </div>
+            <div class="box-line belowSection">
+                <div>
+                    <span id="span3">select beginning date</span>
+                    <input type="date" id="date-begin" class="filter-field" placeholder="date" />
+                </div>
+                <div>
+                    <span id="span4">select end date</span>
+                    <input type="date" name="" id="date-to" placeholder="date">
+                </div>
+            </div>
+            <div class="box-line belowSection">
+                <input type="text" id="car-model" placeholder="model" />
+                <input type="text" class="filter-field" id="idCustomer" placeholder="customer identifier">
+            </div>
+            <div class="box-line belowSection">
+                <button class="button-field" id="send-field">send</button>
+            </div>
+            <script>                
+                let param = window.location.pathname.split("/")[2];
+                document.addEventListener('DOMContentLoaded', async(e)=>{
+                    if (param === "vehicleFilter" || parseInt(param) === 2){
+                        document.getElementById('span1').textContent = "year (click here to set none)";
+                        document.getElementById('span1').style.cursor = 'pointer';
+                        document.getElementById('span2').textContent = 'set color';
+                        document.getElementById('span3').textContent = 'select transmition type';
+                        document.getElementById('span4').textContent = 'select brand';
+                        document.getElementById('car-model').classList.remove('modelInput');
+                        document.getElementById('select-cost').remove();
+                        document.getElementById('select-type').remove();
+                        document.getElementById('date-begin').remove();
+                        document.getElementById('date-to').remove();
+                        let input1 = document.createElement('input');
+                        input1.type = "number";
+                        input1.id = "input-year";
+                        input1.min = "1960";
+                        input1.max = "2025";
+                        input1.value = "1960";
+                        let input2 = document.createElement('input');
+                        input2.id = "input-color";
+                        input2.type = "text";
+                        let select = document.createElement('select');
+                        let opt = document.createElement("option");
+                        opt.textContent = "standard";
+                        opt.value = 'standard';
+                        let opt1 = document.createElement("option");
+                        opt1.textContent = "automatic";
+                        let opt2 = document.createElement("option");
+                        opt2.textContent = "any";
+                        opt2.value = "any";
+                        opt1.value = "automatic";
+                        select.append(opt);
+                        select.append(opt1);
+                        select.append(opt2);
+                        select.id = "select-transmition";
+                        input1.classList.add('filter-field');
+                        input2.classList.add('filter-field');
+                        select.classList.add('filter-field');
+                        document.getElementById('car-model').classList.add('filter-field');
+                        document.querySelectorAll('.box-line').item(2).children[0].append(input1);
+                        document.querySelectorAll('.box-line').item(2).children[1].append(input2);
+                        document.querySelectorAll('.box-line').item(3).children[0].append(select);
+                        document.getElementById('span1').addEventListener('click', ()=>{
+                            document.getElementById('input-year').value = "none";
+                        });
+                        await createOptions();
+                    }
+                });
+                document.getElementById('send-field').addEventListener('click', ()=>{
+                    let param = window.location.pathname.split("/")[2];
+                    if (parseInt(param) === 1 || param === ''){
+                        let total = document.getElementById('select-cost').value;
+                        let type = document.getElementById('select-type').value === "any" ? document.getElementById('select-type').value : document.getElementById('select-type')[document.getElementById('select-type').selectedIndex].textContent;
+                        let datefrom = document.getElementById('date-begin').value;
+                        let dateTo = document.getElementById('date-to').value;
+                        let model = document.getElementById('car-model').value;
+                        let start = window.location.pathname.split('/').length > 3 && isNaN(window.location.pathname.split('/')[3]) === false ? window.location.pathname.split('/')[3] : 0;
+                        let customer = document.getElementById('idCustomer').value;
+                        let data = new URLSearchParams({
+                            'start' : start,
+                            'order' : '3',
+                            'total' : total,
+                            'type' : type,
+                            'dateFrom' : datefrom,
+                            'dateTo' : dateTo,
+                            'model' : model,
+                            'customer' : customer,
+                        });
+                        //solo asi se puede usar envio de parametros por la url si son opcionales
+                        if (window.location.pathname.split('/').length > 4){
+                            window.location.href = window.location.pathname.split('/').slice(0, 3).join('/') + "/?plate=" + String(window.location.pathname.split('/')[3]) + "&" + `${data.toString()}`; 
+                        }
+                        else{
+                            window.location.href = `/checkRegistration/filter/?${data.toString()}`;
+                        }
+                    }
+                    else{
+                        let year = document.getElementById('input-year').value;
+                        let color = document.getElementById('input-color').value;
+                        let transmition = document.getElementById('select-transmition').value === "any" ? document.getElementById('select-transmition').value : document.getElementById('select-transmition')[document.getElementById('select-transmition').selectedIndex].textContent;
+                        let brand = document.getElementById('select-brand').dataset.id;
+                        let model = document.getElementById('car-model').value;
+                        let start = window.location.pathname.split('/').length > 3 && isNaN(window.location.pathname.split('/')[3]) === false ? window.location.pathname.split('/')[3] : 0;
+                        let customer = document.getElementById('idCustomer').value;
+                        let data = new URLSearchParams({
+                            'start' : start,
+                            'order' : '3',
+                            'transmition' : transmition,
+                            'year' : year,
+                            'color' : color,
+                            'brand' : brand,
+                            'model' : model,
+                            'customer' : customer,
+                        });
+                        window.location.href = `/checkRegistration/vehicleFilter/?${data.toString()}`;
+                    }
+                });
+                document.addEventListener('click', (e)=>{
+                    if (e.target.id === 'select-brand'){
+                        if (document.getElementById('options-container').style.display === 'none' || document.getElementById('options-container').style.display === ''){
+                            document.getElementById('options-container').style.display = "block";
+                        }
+                        else{
+                            document.getElementById('options-container').style.display = "none";
+                        }
+                    }
+                    else{
+                        if (e.target.classList.contains('filter-option')){
+                            document.getElementById('select-brand').setAttribute("data-id",String(e.target.textContent));
+                            document.getElementById('options-container').style.display = "none";
+                        }
+                    }
+                });
+            </script>
+        </div>
+        <div class="confirmDelete" id="confirmDelete">
+            <p class="titleDelete confirmSection">Are you sure you want to delete this element? 
+                this will also delete all related data</p>
+            <div class="confirmSection">
+                <button class="confirmation-button" id="lastDelete">Delete</button>
+                <button class="confirmation-button" id="cancelDelete">cancel</button>
+            </div>
+        </div>
+        <script>
+            document.getElementById('lastDelete').addEventListener('click', async()=>{
+                if (String(window.location.pathname.split('/')[2]) === "2" || String(window.location.pathname.split('/')[2]) === "vehicleFilter"){
+                    let resp = await delVehicle(document.getElementById('confirmDelete').dataset.id);
+                    window.location.href = "/"; 
+                }
+                else{
+                    let resp = await delMaintenance(document.getElementById('confirmDelete').dataset.id);
+                    window.location.href = "/";
+                }
+            });
+            document.getElementById('cancelDelete').addEventListener('click', ()=>{
+                document.getElementById('layer1').style.display = "none";
+                document.getElementById('filters-box').style.display = "block";
+                document.getElementById('confirmDelete').style.display = "none";
+            });
+        </script>
+    </div>
+    <header>
+    <div class="header-display">
+            <div class="options">
+                <nav class="nav-options">
+                        <ul class="ul-options">
+                                <li class="li-options" id="li-options0"><a href="/checkRegistration">home</a></li>
+                                <li class="li-options" id="li-options1"><a href="/addMaintenance">add maintenance</a></li>
+                                <li class="li-options" id="li-options2"><a href="/addVehicle">add vehicle</a></li>
+                                <li class="li-options" id="li-options3"><a href="/reports">create report</a></li>
+                                <li class="li-options" id="li-options4"><a href="/agenda">scheduled</a></li>
+                                <li class="li-options search__sec">
+                                    <button class="li-options search__botton" id="search__botton">search</button>
+                                </li>
+                                <li class="li-options">
+                                    <button id="sign__out" class="close">sign out</button>
+                                </li>
+                            <script>
+                                document.getElementById('sign__out').addEventListener('click', async()=>{
+                                    await logout(); 
+                                });
+                                function load(){
+                                    const width = 840;
+                                    if (window.innerWidth <= 840 && document.getElementById('li-container').lastChild.textContent != "RESPONSABILIDAD"){
+                                        const div = document.createElement('div');
+                                        const a = document.createElement('a');
+                                    }
+                                    else{
+                                        if (window.innerWidth > 840 && document.getElementById('li-container').lastChild.textContent === "RESPONSABILIDAD"){
+                                            document.getElementById('li-container').lastChild.remove();
+                                        }
+                                }
+                            }
+                                window.addEventListener("resize", load);
+                                document.addEventListener('DOMContentLoaded',load);
+                            </script>
+                            <script>
+                                document.getElementById('li-more').addEventListener('click', (event)=>{
+                                    document.getElementById('click-counter').textContent = (parseInt(document.getElementById('click-counter').textContent) + 1).toString();
+                                    const doc = document.getElementById('li-container');
+                                    const click_count = parseInt(document.getElementById('click-counter').textContent);
+                                    doc.classList.toggle('active');
+                                });
+                            </script>
+                            <script>
+                                const element = document.getElementById('li-more');
+                                const li = window.getComputedStyle(document.getElementById('li-more'));
+                                const observer = new MutationObserver(()=>{
+                                    if(li.display === 'none'){
+                                        document.getElementById('li-container').style.display = 'none';
+                                    }
+                                    else{
+                                        document.getElementById('li-container').style.display = 'flex';
+                                    }
+                                });
+                                observer.observe(element, {attributes : true});
+                            </script>
+                        </ul>
+                        <div class="searched__space" id="searched__space">
+                            <div class="searched__sec">
+                                <input type="text" id="vehicle__busq" placeholder="search by car (for any context)" required/>
+                                <button class="searched__button" id="searched__button">search</button>
+                            </div>
+                        </div>
+                </nav>
+                <button class="responsive-button" id="responsive-button"></button>
+                <script>
+                    document.getElementById('responsive-button').addEventListener('click', function(){
+                        const menu = document.getElementById('responsive-menu');
+                        menu.classList.toggle('acti');
+                        document.getElementById('responsive-button').style.left = '100%';
+                    });
+                </script>
+                <div class="responsive-menu" id="responsive-menu">
+                    <button class="button-close-menu" id="button-close-menu"></button>
+                    <script>
+                        document.getElementById('button-close-menu').addEventListener('click', function(){
+                        const menu = document.getElementById('responsive-menu');
+                        menu.classList.toggle('acti');
+                        document.getElementById('responsive-button').style.left = '90%';
+                    });
+                    </script>
+                    <div class="responsive-structure" id="responsive-structure">
+                            <ul class="ul-structure" id="ul-structure">
+                                <li class="li-options-responsive" id="li1"><a href="/addMaintenance">add maintenance</a></li>
+                                <li class="li-options-responsive" id="li2"><a href="/addVehicle">add vehicle</a></li>
+                                <li class="li-options-responsive" id="li3">create report</li>
+                                <input class="li-options-responsive search__vehicle" id="li4" placeholder="search by car (for any context)"/>
+                                <button class="li-options-responsive searched__resp" id="searched__resp">search</button>
+                                <li class="li-options-responsive" id="li3"><a href="/reportes">create report</a></li>
+                                <li class="li-options-responsive" id="li4"><a href="/agenda">scheduled</a></li>
+                            </ul>
+                    </div>
+                </div>
+        </div>
+    </header>
+        <div class="agenda__notifications" id="agenda__notifications">
+            <button class="close__notifications" id="closer">X</button>
+            <div class="text__info" id="text__info"></div>
+            <button class="info__direction" id="info__direction">check</button>
+        </div>
+        <script>
+            document.getElementById('closer').addEventListener('click', (e)=>{
+                document.getElementById('agenda__notifications').style.display = 'none';
+            });
+
+            document.addEventListener('DOMContentLoaded', async(e)=>{
+                getNotifications();
+                hide = setTimeout(() => {
+                    document.getElementById("agenda__notifications").classList.add("acti");
+                }, 1500);
+            });
+            document.getElementById("agenda__notifications").addEventListener('mouseenter',(e)=>{
+                clearTimeout(hide);
+            });
+            document.getElementById("agenda__notifications").addEventListener('mouseleave',(e)=>{
+                hide = setTimeout(() => { 
+                    document.getElementById("agenda__notifications").classList.add("acti");
+                }, 1500);
+            });
+            async function getNotifications() {
+                let resp = await notifications();
+                if (resp[0] > 0 || resp[1] > 0){
+                    document.getElementById('agenda__notifications').style.display = "flex";
+                }
+                document.getElementById('text__info').textContent = "you have " + String(resp[0]) + " maintenances upcoming " + "and " + String(resp[1]) + " no completed"; 
+            }
+            document.getElementById('info__direction').addEventListener('click', (e)=>{
+                window.location.href = "/agenda";
+            });
+        </script>
+    <section>
+        <div class="buttonEntities">
+                    <div class="boton__container" id="btn__container">
+                        <button class="registration__button" id="1__maintenance">maintenance</button>
+                        <button class="registration__button vehicle__2" id="2__vehicle">vehicle</button>
+                    </div>
+                    <div class="edit-container" id="edit-container">
+                        <p class="text-element" id="pagination-data"></p>
+                    </div>
+                    <script>
+                        document.getElementsByClassName('registration__button')[0].addEventListener('click', function(event){
+                            window.location.href = "/checkRegistration/" + String(event.target.id)[0] + "/";
+                        });
+                        document.getElementsByClassName('registration__button')[1].addEventListener('click', function(event){
+                            window.location.href = "/checkRegistration/" + String(event.target.id)[0] + "/";
+                        });
+                        document.getElementById('filters').addEventListener('click', (e)=>{
+                            document.getElementById('confirmDelete').style.display = "none";
+                            document.getElementById('filters-box').style.display = "block";
+                            document.getElementById('layer1').style.display = "flex";
+                            document.body.style.overflowX = "none";
+                        });
+                    </script>
+                </div>
+    </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', ()=>{
+            let element = window.location.pathname.split('/')[2];
+            if (String(element) === "vehicleFilter" || String(element) === "2"){
+                document.getElementById("bigTitle").textContent += "Vehicles";
+            }
+            else{
+                document.getElementById("bigTitle").textContent += "Maintenances";
+            }
+        });
+    </script>
+    <section>
+        {%csrf_token%}
+        <meta name="csrf_token" content="{{ csrf_token }}">
+        <script>
+            //funcion para limpiar la tabla/tarjetas para mantenimientos/vehiculos de todas las filas contenidas
+            //problema aqui
+            function clean(){
+                let nav = document.getElementById('nav__grid');
+                let quantity = nav.children.length;
+                for (let i = 0; i < quantity; i++){
+                    nav.lastChild.remove();
+                }
+            }
+        </script>
+                <div class="img__section">
+                    <div class="boton__container" id="btn__container">
+                        <div class="edit-container" id="edit-container">
+                            <button type="button" class="registration__button edit-button" id="filters">apply filters</button>
+                        </div>
+                    </div>
+                    <script>
+                        document.getElementsByClassName('registration__button')[0].addEventListener('click', function(event){
+                            window.location.href = "/checkRegistration/" + String(event.target.id)[0] + "/";
+                        });
+                        document.getElementsByClassName('registration__button')[1].addEventListener('click', function(event){
+                            window.location.href = "/checkRegistration/" + String(event.target.id)[0] + "/";
+                        });
+                        document.getElementById('filters').addEventListener('click', (e)=>{
+                            document.getElementById('confirmDelete').style.display = "none";
+                            document.getElementById('filters-box').style.display = "block";
+                            document.getElementById('layer1').style.display = "flex";
+                            document.body.style.overflowX = "none";
+                        });
+                    </script>
+                </div>
+                <section id="title__h1">
+
+                </section>
+                <section class="grid__data">
+                    <nav id="nav__grid" class="nav__grid">
+
+                    </nav>
+                    <div class="buttons__sec" id="buttons__sec">
+                        <button class="arrows buttons__page" id="previous-arrow"><</button>
+                    </div>
+                </section>
+    </section>
+    <script>
+        document.getElementById('search__botton').addEventListener('click', (e) =>{
+            if (document.getElementById('searched__space').style.display === 'block'){
+                document.getElementById('searched__space').style.display = 'none';
+            }
+            else{
+                document.getElementById('searched__space').style.display = 'block';
+            }
+        });
+    </script>
+    <script>
+        document.getElementById('searched__button').addEventListener('click', function(e){
+            search();
+        });
+        document.getElementById('searched__resp').addEventListener('click', function(e){
+            search();
+        });
+    </script>
+    <script>
+        function search(){
+            let pathvehicle = window.location.pathname;
+            let direction = pathvehicle.split('/');
+            let pam = direction[2];
+            let data = document.getElementById('vehicle__busq').value === '' ? document.getElementById('li4').value : document.getElementById('vehicle__busq').value;
+            if (document.getElementById('vehicle__busq').value != "" || document.getElementById('li4').value){
+                if (String(pam) == '2'){
+                    window.location.href = "/checkRegistration/2/" + String(data);
+                }
+                else{
+                    window.location.href = "/checkRegistration/1/" + String(data);
+                }
+            }
+        }
+    </script>
+    <section>
+        <nav class="nav__parts" id="nav__parts">
+            <div class="part__segment">
+                <div class="details">
+                    <p class="title__details">More options</p>
+                    <p>check this options to manage</p>
+                    <p>more stuff from your workshop</p> 
+                </div>
+            </div>
+            <div class="part__button">
+                <button class="button_parts" onclick="goInventory()">go products</button>
+                <button class="button_parts establishment" onclick="goEstablishment()">update establishment data</button>
+            </div>
+        </nav>
+    </section>
+    <section>
+        <br>
+        <br>
+        <br>
+    </section>
+    <script>
+        function goEstablishment(){
+            window.location.href = '/updateEstablishment/';
+        }
+        function goInventory(){
+            window.location.href = '/inventory/';
+        }
+    </script>
+</body>
+</html>

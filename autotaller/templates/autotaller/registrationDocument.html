@@ -1,0 +1,136 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>registration document</title>
+    <link rel="stylesheet" href="{% static 'autotaller/hojadeRegistro.css' %}">
+    <link rel="stylesheet" href="{% static 'autotaller/normalize.css' %}">
+</head>
+<body>
+    <div class="container" id="container">
+        <h1 class="title">registration document</h1>
+        
+        <div class="form">
+            <p><strong>Vehicle:</strong> <span id="plate">${vehicle.plate}</span></p>
+            <p><strong>customer:</strong> span id="customer">${vehicle.customer}</span></p>
+        </div>
+
+        <table class="table" id="tableMaintenance">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>cost job</th>
+                    <th>Total</th>
+                    <th>Detail</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Script -->
+            </tbody>
+        </table>
+    </div>
+    <div class="modal" id="modalDetail">
+        <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>
+            <iframe id="iframeDetail" src="" frameborder="0"></iframe>
+        </div>
+    </div>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const container = document.getElementById("container");
+        const vehicleId = "P452AAA";  // Vehicle de ejemplo
+
+        const modal = document.getElementById("modalDetail");
+        const iframeDetail = document.getElementById("iframeDetail");
+        const closeModal = document.getElementById("closeModal");
+
+        closeModal.addEventListener("click", () => {
+            modal.style.display = "none";
+            iframeDetail.src = "";  // Limpiar iframe
+        });
+
+        document.querySelectorAll(".btn-Detail").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const id = btn.dataset.id;
+            iframeDetail.src = `/maintenance/${id}/`;  
+            modal.style.display = "block";
+        });
+        });
+
+        fetch(`/api/maintenance/historial/${vehicleId}/`)
+            .then(res => {
+                if (!res.ok) {
+                    if (res.status === 404) {
+                        throw new Error("No old registers for this vehicle.");
+                    }
+                    throw new Error("Error on get vehicle historial.");
+                }
+                return res.json();
+            })
+            .then(data => {
+                const { vehicle, historial } = data;
+
+                let html = `
+                    <h2 class="title">registration document</h2>
+                    <div class="form">
+                        <p><strong>Vehicle:</strong> ${vehicle.plate}</p>
+                        <p><strong>customer:</strong> ${vehicle.customer}</p>
+                    </div>
+                `;
+
+                if (historial.length === 0) {
+                    html += `<p class="message">No previous register for this car.</p>`;
+                } else {
+                    html += `
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Type</th>
+                                    <th>Status</th>
+                                    <th>cost_job</th>
+                                    <th>Total</th>
+                                    <th>Detail</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    `;
+
+                    historial.forEach(register => {
+                        html += `
+                            <tr>
+                                <td>${register.Date}</td>
+                                <td>${register.Type}</td>
+                                <td>${register.Status}</td>
+                                <td>${register.cost_job}</td>
+                                <td>${register.total}</td>
+                                <td><button class="btn-Detail" data-id="${register.id}">check</button></td>
+                            </tr>
+                        `;
+                    });
+
+                    html += `</tbody></table>`;
+                }
+
+                container.innerHTML = html;
+
+                document.querySelectorAll(".btn-Detail").forEach(btn => {
+                    btn.addEventListener("click", () => {
+                        const id = btn.dataset.id;
+                        iframeDetail.src =`/maintenance/${id}/`;
+                        modal.style.display = "block";
+                    });
+                });
+            })
+            .catch(error => {
+                container.innerHTML = `<p class="mesagge-error">${error.message}</p>`;
+                console.error("Error:", error);
+        });
+    });
+    </script>
+
+</body>
+</html>

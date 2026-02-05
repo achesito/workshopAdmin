@@ -1,0 +1,23 @@
+html{
+    min-height: 100%;
+    min-width: 100%;
+}
+
+body{
+    background: radial-gradient(#33a, rgb(77, 55, 241), rgb(170, 170, 246));
+    font-family: Arial, Helvetica, sans-serif;
+    color: #8a3f3f;
+    height: auto;
+}
+
+.ul__options{
+    text-decoration: none;
+    display: flex;
+    justify-content: space-evenly;
+    margin: 0;
+    padding: 20px;
+}
+.nav__header{
+    background-color: #ffc2c2;
+    min-width: 100%;
+}

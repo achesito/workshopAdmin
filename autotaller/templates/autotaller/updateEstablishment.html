@@ -1,0 +1,167 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{%static '/autotaller/normalize.css'%}?v={{ version }}">
+    <link rel="stylesheet" href="{%static '/autotaller/updateEstablishment.css'%}?v={{ version }}">
+    <link rel="stylesheet" href="{%static 'autotaller/header.css' %}">
+    <script src="{%static 'autotaller/js/establisment.js'%}"></script>
+    <title>update workship data</title>
+</head>
+<body>
+    <header>
+    <div class="header-display">
+            <div class="options">
+                <nav class="nav-options">
+                        <ul class="ul-options">
+                            <li class="li-options" id="li-options0"><a href="/checkRegistration">Home</a></li>
+                            <li class="li-options" id="li-options1"><a href="/addMaintenance">add maintenance</a></li>
+                            <li class="li-options" id="li-options2"><a href="/addVehicle">add Vehicle</a></li>
+                            <li class="li-options" id="li-options3"><a>create report</a></li>
+                            <li class="li-options" id="li-options4"><a href="/agenda">scheduled</a></li>
+                            <script>
+                                function removeMore(){
+                                    if (window.innerWidth > 1120){
+                                        document.getElementById('li-more').style.display = 'none';
+                                    }
+                                    else{
+                                        document.getElementById('li-more').style.display = 'block';
+                                    }
+                                }
+                                function load(){
+                                    const width = 840;
+                                    if (window.innerWidth <= 840 && document.getElementById('li-container').lastChild.textContent != "RESPONSABILIDAD"){
+                                        const div = document.createElement('div');
+                                        const a = document.createElement('a');
+                                    }
+                                    else{
+                                        if (window.innerWidth > 840 && document.getElementById('li-container').lastChild.textContent === "RESPONSABILIDAD"){
+                                            document.getElementById('li-container').lastChild.remove();
+                                        }
+                                }
+                            }
+                                window.addEventListener("resize", removeMore);
+                                window.addEventListener("resize", load);
+                                document.addEventListener('DOMContentLoaded',load);
+                            </script>
+                            <script>
+                                document.getElementById('li-more').addEventListener('click', (event)=>{
+                                    document.getElementById('click-counter').textContent = (parseInt(document.getElementById('click-counter').textContent) + 1).toString();
+                                    const doc = document.getElementById('li-container');
+                                    const click_count = parseInt(document.getElementById('click-counter').textContent);
+                                    doc.classList.toggle('active');
+                                });
+                            </script>
+                            <script>
+                                const element = document.getElementById('li-more');
+                                const li = window.getComputedStyle(document.getElementById('li-more'));
+                                const observer = new MutationObserver(()=>{
+                                    if(li.display === 'none'){
+                                        document.getElementById('li-container').style.display = 'none';
+                                    }
+                                    else{
+                                        document.getElementById('li-container').style.display = 'flex';
+                                    }
+                                });
+                                observer.observe(element, {attributes : true});
+                            </script>
+                        </ul>
+                </nav>
+                <button class="responsive-button" id="responsive-button"></button>
+                <script>
+                    document.getElementById('responsive-button').addEventListener('click', function(){
+                        const menu = document.getElementById('responsive-menu');
+                        menu.classList.toggle('acti');
+                        document.getElementById('responsive-button').style.left = '100%';
+                    });
+                </script>
+                <div class="responsive-menu" id="responsive-menu">
+                    <button class="button-close-menu" id="button-close-menu"><i class="fa-solid fa-xmark"></i></button>
+                    <script>
+                        document.getElementById('button-close-menu').addEventListener('click', function(){
+                        const menu = document.getElementById('responsive-menu');
+                        menu.classList.toggle('acti');
+                        document.getElementById('responsive-button').style.left = '90%';
+                    });
+                    </script>
+                    <div class="responsive-structure" id="responsive-structure">
+                            <ul class="ul-structure" id="ul-structure">
+                                <li class="li-options-responsive" id="li1"><a href="/checkRegistration">home</a></li>
+                                <li class="li-options-responsive" id="li2"><a href="/addMaintenance">add maintenance</a></li>
+                                <li class="li-options-responsive" id="li3"><a href="/addVehicle">add vehicle</a></li>
+                            </ul>
+                    </div>
+                </div>
+        </div>
+    </header>
+    <section>
+        <script>
+            async function loadEstablishment(){
+                let response = await getEstablishment();
+                document.getElementById('name').value = response[0].name;
+                document.getElementById('address').value = response[0].address;
+                document.getElementById('phone number').value = response[0].phone_number;
+                document.getElementById('economic activity').value = response[0].economic_activity;
+                document.getElementById('mail').value = response[0].mail;
+                document.getElementById('name').classList.add(String(response[0].id));
+                document.getElementById('currencyName').value = response[0].currencyName;
+                document.getElementById('nit').value = String(response[0].legalIdentifier);
+                document.getElementById('nrc').value = String(response[0].taxIdentifier);
+            }
+           document.addEventListener('DOMContentLoaded', loadEstablishment);
+        </script>
+        <div class="bussines__section">
+            <nav class="data__section">
+                <div class="div__data1">bussines data</div>
+                <div class="div__data2">update all fields and data from your establishment here</div>
+            </nav>
+            <form method="post">
+                {%csrf_token%}
+                <meta name="csrf_token" content="{{ csrf_token }}">
+                <fieldset>
+                    <input type="text" class="data__input" id="name" required placeholder="name"/>
+                    <input type="text" class="data__input" id="address" required placeholder="bussines address"/>
+                </fieldset>
+                <fieldset>
+                    <input type="text" class="data__input" id="phone number" required placeholder="phone number" />
+                    <input type="text" class="data__input" id="economic activity" required placeholder="economic activity" />
+                </fieldset>
+                <fieldset class="last__fieldset">
+                    <input type="text" class="data__input" id="mail" required placeholder="mail"/>
+                    <input type="text" class="data__input" id="currencyName" required placeholder="currency name"/>
+                </fieldset>
+                </fieldset>
+                <fieldset class="last__fieldset">
+                    <input type="text" class="data__input" id="nit" required placeholder="legal identifier (NIT)"/>
+                    <input type="text" class="data__input" id="nrc" required placeholder="tax identifier (NRC)"/>
+                </fieldset>
+                <fieldset>
+                    <div class="sec__data">
+                        <button class="button__save" id="button__save">save all changes</button>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </section>
+    <script>
+        document.getElementById('button__save').addEventListener('click', async(e)=>{
+            e.preventDefault();
+            let ident = parseInt(document.getElementById('name').classList[1]);
+            const Establishment = {
+                id : ident,
+                name : document.getElementById('name').value,
+                address : document.getElementById('address').value,
+                phone_number : document.getElementById('phone number').value,
+                economic_activity : document.getElementById('economic activity').value,
+                mail : document.getElementById('mail').value,
+                tax_added : document.getElementById('tax').value,
+                currencyName : document.getElementById('currencyName').value,
+            };
+            response = await updateEstablishment(Establishment, ident);
+            window.location.reload();
+        });
+    </script>
+</body>
+</html>

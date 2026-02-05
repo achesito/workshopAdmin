@@ -1,0 +1,199 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{%static 'autotaller/normalize.css' %}">
+    <link rel="stylesheet" href="{%static 'autotaller/mail.css' %}">
+    <link rel="stylesheet" href="{%static 'autotaller/header.css' %}">
+    <script src="{%static 'autotaller/js/establisment.js'%}"></script>
+    <script src="{%static 'autotaller/js/sendMail.js' %}"></script>
+    <title>emailCreate</title>
+</head>
+<body>
+    <header>
+        <div class="header-display">
+            <div class="options">
+                <nav class="nav-options">
+                        <ul class="ul-options">
+                            <li class="li-options" id="li-options0"><a href="/checkRegistration">Home</a></li>
+                            <li class="li-options" id="li-options1"><a href="">add Maintenance</a></li>
+                            <li class="li-options" id="li-options2"><a href="/addVehicle">add vehicle</a></li>
+                            <li class="li-options" id="li-options3"><a href="/reports">create report</a></li>
+                            <script>
+                                function removeMore(){
+                                    if (window.innerWidth > 1120){
+                                        document.getElementById('li-more').style.display = 'none';
+                                    }
+                                    else{
+                                        document.getElementById('li-more').style.display = 'block';
+                                    }
+                                }
+                                function load(){
+                                    const width = 840;
+                                    if (window.innerWidth <= 840 && document.getElementById('li-container').lastChild.textContent != "RESPONSABILIDAD"){
+                                        const div = document.createElement('div');
+                                        const a = document.createElement('a');
+                                    }
+                                    else{
+                                        if (window.innerWidth > 840 && document.getElementById('li-container').lastChild.textContent === "RESPONSABILIDAD"){
+                                            document.getElementById('li-container').lastChild.remove();
+                                        }
+                                }
+                            }
+                                window.addEventListener("resize", removeMore);
+                                window.addEventListener("resize", load);
+                                document.addEventListener('DOMContentLoaded',load);
+                            </script>
+                            <script>
+                                document.getElementById('li-more').addEventListener('click', (event)=>{
+                                    document.getElementById('click-counter').textContent = (parseInt(document.getElementById('click-counter').textContent) + 1).toString();
+                                    const doc = document.getElementById('li-container');
+                                    const click_count = parseInt(document.getElementById('click-counter').textContent);
+                                    doc.classList.toggle('active');
+                                });
+                            </script>
+                            <script>
+                                const element = document.getElementById('li-more');
+                                const li = window.getComputedStyle(document.getElementById('li-more'));
+                                const observer = new MutationObserver(()=>{
+                                    if(li.display === 'none'){
+                                        document.getElementById('li-container').style.display = 'none';
+                                    }
+                                    else{
+                                        document.getElementById('li-container').style.display = 'flex';
+                                    }
+                                });
+                                observer.observe(element, {attributes : true});
+                            </script>
+                        </ul>
+                </nav>
+                <button class="responsive-button" id="responsive-button"></button>
+                <script>
+                    document.getElementById('responsive-button').addEventListener('click', function(){
+                        const menu = document.getElementById('responsive-menu');
+                        menu.classList.toggle('acti');
+                        document.getElementById('responsive-button').style.left = '100%';
+                    });
+                </script>
+                <div class="responsive-menu" id="responsive-menu">
+                    <button class="button-close-menu" id="button-close-menu"><i class="fa-solid fa-xmark"></i></button>
+                    <script>
+                        document.getElementById('button-close-menu').addEventListener('click', function(){
+                        const menu = document.getElementById('responsive-menu');
+                        menu.classList.toggle('acti');
+                        document.getElementById('responsive-button').style.left = '90%';
+                    });
+                    </script>
+                    <div class="responsive-structure" id="responsive-structure">
+                            <ul class="ul-structure" id="ul-structure">
+                                <li class="li-options-responsive" id="li1"><a href="/checkRegistration"></a>home</li>
+                                <li class="li-options-responsive" id="li1"><a href="/consultarRegistro">add maintenance</a></li>
+                                <li class="li-options-responsive" id="li2"><a href="/agregarVehiculo">add vehicle</a></li>
+                                <li class="li-options-responsive" id="li3"><a href="/reportes/">create report</a></li>
+                                <li class="li-options-responsive" id="li4"><a href="/agenda/">agenda</a></li>
+                            </ul>
+                    </div>
+                </div>
+        </div>
+    </header>
+</body>
+<section>
+    {%csrf_token%}
+    <meta name="csrf_token" content="{{ csrf_token }}">
+    <div class="email-temp">
+        <h1>Email Sender</h1>
+        <div class="email-space" id="email-space">
+          <fieldset class="fieldset-data">
+            <span>customer:</span>
+            <input class="mailField" id="customerMail" />
+          </fieldset>
+          <fieldset class="fieldset-data">
+            <span class="belowSpan">Affair:</span>
+            <input class="mailField" id="affairMail" />
+          </fieldset>
+          <fieldset class="fieldset-data">
+            <span class="belowSpan">content:</span>
+            <textarea class="mailField contentField" id="contentMail"></textarea>
+          </fieldset>
+          <fieldset class="fieldset-data lastField">
+            <button class="addButtons" type="button" id="fileAdder" data-id="0">add Files</button>
+          </fieldset>
+          <script>
+            document.getElementById('fileAdder').addEventListener('click', (e)=>{
+                if (parseInt(document.getElementById('fileAdder').dataset.id) <= 7){
+                    let dv = document.createElement("div");
+                    dv.classList.add("buton-container");
+                    let btn = document.createElement("button");
+                    btn.classList.add("addFile");
+                    btn.classList.add("delButton");
+                    btn.type = "button";
+                    btn.textContent = "delete";
+                    let field = document.createElement("fieldset");
+                    field.classList.add("fieldset-data");
+                    field.classList.add("specialFieldset");
+                    let spn = document.createElement("span");
+                    spn.classList.add("specialSpan");
+                    spn.textContent = "add document:"; 
+                    let lbl = document.createElement("label");
+                    lbl.classList.add("addFile");
+                    lbl.textContent = "add File";
+                    let inp = document.createElement("input");
+                    inp.type = "file";
+                    inp.classList.add("inputFile");
+                    inp.id = "input" + String(parseInt(e.target.dataset.id) + 1);
+                    lbl.setAttribute("for", "input" + String(parseInt(e.target.dataset.id) + 1));
+                    field.append(spn);
+                    dv.append(lbl);
+                    dv.append(inp);
+                    dv.append(btn);
+                    field.append(dv);
+                    document.getElementById('email-space').insertBefore(field, document.getElementById('email-space').children[document.getElementById('email-space').children.length - 3]);
+                    e.target.dataset.id = String(parseInt(e.target.dataset.id) + 1);
+                    btn.addEventListener('click', (element)=>{
+                        field.remove();
+                    });
+                }
+            });
+            document.addEventListener('click', (e)=>{
+                if (e.target.className === "addFile"){
+                    document.querySelectorAll('.inputFile').forEach(element =>{
+                        element.addEventListener('change', ()=>{
+                            let inp = document.getElementById(String(e.target.getAttribute("for")));
+                            let spn = document.querySelectorAll('.fieldset-data')[parseInt(inp.id[inp.id.length - 1]) + 3].firstChild;
+                            spn.textContent = inp.files[0].name;
+                        });
+                    });
+                }
+            });
+          </script>
+          <fieldset class="fieldset-data lastField">
+            <button class="addButtons" type="button" id="fileSubmit" data-id="0">send mail</button>
+          </fieldset>
+          <script>
+            document.getElementById('fileSubmit').addEventListener('click', async()=>{
+                let estb = await getEstablishment();
+                sendMail(estb[0]);
+                window.location.reload();
+            });
+          </script>
+          <script>
+            document.addEventListener('DOMContentLoaded', async(e)=>{
+                let params = window.location.pathname.split("/");
+                let resp = await fetch('/api/customerVehicle/customer/?vehicle=' + String(params[2]), {
+                    method : 'GET',
+                    headers : {
+                        'Content-Type' : 'application/json',
+                        'X-CSRFToken' : document.querySelector('meta[name="csrf_token"]').getAttribute('content')
+                    }
+                });
+                let id = await resp.json();
+                document.getElementById('customerMail').value = String(id[0].mail);
+                document.getElementById('customerMail').readOnly = true;
+            });
+          </script>
+        </div>
+    </div>
+</section>
+</html>

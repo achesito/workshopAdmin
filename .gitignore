@@ -1,0 +1,23 @@
+# Entornos virtuales
+venv/
+env/
+.venv/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Django
+db.sqlite3
+*.log
+
+# Variables de entorno
+.env
+
+# Archivos de usuario
+media/
+
+# Backups
+backups/

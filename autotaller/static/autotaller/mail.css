@@ -1,0 +1,145 @@
+html{
+    min-height: 100vh;
+}
+
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #fff;
+    color: black;
+    font: 'Helvetica';
+    min-height: 100vh;
+}
+
+button{
+    cursor: pointer;
+}
+
+h1 {
+    font-size: clamp(16px, 2vw + .8rem, 48px);
+    text-align: center;
+    padding-top: 20px;
+    font-weight: 500;
+    margin-bottom: 30px;
+}
+
+
+.email-space{
+    height: max-content;
+    width: 100%;
+    min-width: 0;
+}
+
+.email-temp{
+    margin: 50px auto 0 auto;
+    background-color: rgb(255, 255, 255);
+    width: 700px;
+    min-width: 0;
+    box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.5);
+    border-radius: 20px;
+}
+
+.fieldset-data{
+    width: 100%;
+    min-width: 0;
+    padding: 0;
+    border-radius: 20px;
+    border: 0px solid #000;
+    height: max-content;
+}
+
+.fieldset-data span{
+    width: 80%;
+    margin: auto;
+    display: block;
+    padding-bottom: 10px;
+    font-weight: 500;
+    font-size: large;
+}
+
+.mailField{
+    display: block;
+    padding-left: 6px;
+    width: 80%;
+    margin: auto;
+    height: 25px;
+    border-radius: 10px;
+    border: 1px solid #bdbbbb;
+    margin-bottom: 10px;
+}
+
+.belowSpan{
+    padding-top: 20px;
+}
+
+.contentField{
+    height: 60px;
+}
+
+.specialFieldset{
+    margin-top: 20px !important;
+    width: 80%;
+    margin: auto;
+    background-color: #000;
+    height: 25px;
+    text-align: left;
+    height: 40px;
+    display: flex;
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
+    justify-content: space-between;
+    align-items: center;
+}
+
+.specialSpan{
+    width: max-content !important;
+    font-size: small !important;
+    margin: 0px 0px 0px 6px !important;
+    padding-top: 10px;
+    line-height: normal;
+    display: flex;
+    color: #fff;
+    align-items: center;
+    font-weight: 500 !important;
+}
+
+.addFile{
+    font-size: small;
+    height: max-content;
+    width: max-content;
+    border-radius: 10px;
+    background-color: #ffffff;
+    margin-right: 10px;
+    color: #000000;
+    padding: 6px;
+    line-height: 50%;
+    cursor: pointer;
+    font-weight: 500 !important;
+}
+
+.delButton{
+    height: 30px !important;
+}
+
+.inputFile{
+    display: none;
+}
+
+.addButtons{
+    height: 30px;
+    width: max-content;
+    padding: 4px 10px 4px 10px;
+    font-weight: 600;
+    color: #fff;
+    font-size: medium;
+    background-color: #000;
+    text-align: center;
+    display: block;
+    margin: 20px auto 10px auto;
+    border-radius: 70px;
+}
+
+.buton-container{
+    display: inline-block;
+    width: max-content;
+    padding: 0px;
+    height: max-content;
+}

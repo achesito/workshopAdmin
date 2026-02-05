@@ -1,0 +1,286 @@
+// User guide (English)
+this document was made to help users about how this product (workshopAdmin) Works, how many features are included, which are these features and some general important points about the system. 
+
+What does the system do:
+
+workshopAdmin it's an useful tool to manage data from workshops, that means all related data about this system can be saved from any moment to help taking control on the tasks and activities, saving time in handle registers adding persistence to important information necessary to improve the way of work in this workshop. these are the main characteristics from the system:
+
+1 - Manage maintenances:
+-create, retrieve, update and cancel maintenances any time
+-Schedule your future maintenances
+-compare all your maintenances (depending on characteristics)
+-historial about maintenances of any customer
+-filter by maintenance characteristics
+-maintenance status (pending, completed or upcoming)
+-special page/view for look pending or not completed maintenances
+
+the main view for add or update maintenances it's "add maintenance", having several options like add spares if there's any spare used on the maintenance, displaying a square showing spares depending if there's existing any real quantity of this spare on the inventory, this feature Will be detailed later. maintenances with task status as "completed" are not editable because it's means the service was definitely completed and customer was ok with the service's quotation, so this maintenance remains as historial or file records for future considerations about the customer's vehicle or to make a detailed analysis about this business workflow, considering important details and detecting data for future solutions to the customers and modernizing the way of work. any task status it's completely editable. the main view of the system (check registration) has the posibility to display maintenances pressing the button named "maintenance" to show every maintenance, and pressing the button vehicle, the vehicle Will be displayed, both of this entities has them own filter options to apply pressing the "apply filters" option. you can have unlimited number of entities on both, organizing the differents groups of data by sections. if the user needs to consult the historial of some vehicle, Will be necessary to type the vehicle license plate on the search box displayed after press the "search" button and submit the typed value, later the user can apply any kind of filter neccesary to order and filter what maintenances does this vehicle receive and when. however, the filters can be applied every time and not mandatorily with the vehicle plate previously typed
+
+2 - Manage vehicles/customers:
+
+-register of vehicles associates to the customers mandatory (in "add vehicle")
+-create, retrieve, and delete vehicles including his customer.
+-update just the editable data of customers and vehicles, singular characteristics as model or the customer id are not changeable
+-add more vehicles if the customers have any more vehicles
+-assign a new owner for a vehicle registering both in the "add vehicle" view, same for assign a new vehicle from a customer
+-historial of all the registered vehicles from a customer over time and currently
+
+the "check registration" view has a search button that displays a box to search for maintenances or vehicles depending on which entity was choosed at the moment you pressed a button from the box with the buttons "maintenance" and "vehicle", writing the car license plate on the search box, is not necessary to write the whole license plate, type the characters you remember from the car plate and the system Will make a search of all the car license plates starting with those characters you wrote, retrieving all the posible coincidences, and maintenance if you press the button for maintenance or vehicle otherwise. The default entity showed on the check registration view is maintenance. you can add vehicle / customer in the "add vehicle" view, giving space for upload 4 images, you must add at least one image to clarify what kind of vehicle was registered beyond the included data. you can add new images, replacing the previous images if the four photos are already added. the check registration view gives the posibility to check more details about the registered maintenances or vehicles clicking the cards displayed, this cards could take you to the add maintenance or add vehicle view, where all data fields are filled with the entities information.
+
+ 
+3 - "Inventory":
+
+workshopAdmin IS NOT an inventory system and does not seek to replace one, and also does not seek to work as a spare store, this feature it's used to include spares on the quotation, manage tools for the services and take control over the administration of the spares availables on the business, due to most of the workshops business do not count with an own inventory list, and most of the spares used are requested for the employeers on the workshop or purchased from thierd parties, and they don't sell this spares separately. 
+
+this is how it works:
+-you can create, retrieve, update and delete all entities included (spares, categories, providers and arrivals) in the inventory feature, except for the arrivals that work as a register of the spares delivered, increasing the number of unities of a single spare in the inventory, the one that was deliverd. arrivals are not editable, but you can delete them deleting an especific spare and arrivals associates to that spare will be deleted.
+-you can search for spares and arrivals by applying filters, both of this entities have them own filter fields
+-you can take control of the spare's disponibility using the arrivals to add more spares to the stuck, also this register the date of arrive, when you add a maintenance service and include a certain number of spare unities this will be quantity subtract to the actual spare stock.
+-list of sections displayed as tables on the inventory view using pagination, depending on how many registers you have working on your system.
+
+to switch between entities you must change the selected value in the select box on the view to the entity you want to display, this will also switch the form to add more registers and the filter options over the filters applier, you can add register and apply filters pressing the buttons detailed above named "add register" and "set filters". this feature it's not mandatory to implement, you can avoid the spares implementation if your business doesn't register the spares used or don't used spares, however is highly recommended if you use spares. If at any point the stock of a certain spare part reaches 0, it cannot be used for maintenance until more units arrive from the suppliers.
+
+4 - Documents:
+
+-the system can create pdf documents as voucher's services of all type of maintenance 
+-the vouchers can be used as an invoice or quotation for the customers
+-the system can save all this documents if the user need to verify if the maintenance was actually done
+-the system can render or create this documents in english or spanish depending on the user's browser language
+-the system can send this pdf by email adding any optional description.
+
+at the moment you get into the maintenance details clicking the card on the check registration view, there also Will be a button named "getpdf" to download the pdf file of the maintenance quotation, feel free to give it any other use besides the named previously. 
+IMPORTANT: the pdf file say it, but this pdf files DO NOT HAVE any tax recognition or legal value to be useful in any electronic facturation system, the use of this document is between business and customer, please be responsible with the use you give to this documents.
+
+5 -  mail sender:
+
+-the system can send mail to the customers, you can choose between add or not add any file about services like quotation or any other document
+-the mail responses arrive to the establishment mail
+-the system can add multiple type of files in one single mail
+
+when you select maintenance in check registration you Will se a button named "send mail" inside of the maintenance card, when you click it the system Will send you to the mail sender, having already the customer's mail added to just write the mail and add the files
+
+the mail sender has a limit of 7 files for mail due to technical reasons. You need to update 
+
+6 - manage establishment:
+update the fields of your maintenance, including email, address, phone number and some other more, this is useful to identify your business in the pdf voucher document. After adding your actual email direction in establishment view. you Will get all the customer response to the email of your establishment, don't matter if it's for the business or if it's your personal mail.
+
+below of maintenance / vehicle table at checkRegistration it's a square with two buttons to go inventory or to update your establishment data, those buttons Will redirect you to those views
+
+7 - Reports:
+
+-Excel statistical reports generation 
+-monthly or anual reports 
+-reports in english or spanish depending on user's browser language
+
+reports contain data about relevant stuff saved on the system, things like summaries for the maintenances, total customers attended and some other more. to download and generate Excel statistical report you should go to the "create report" section or equivalent, click on there and you'll be redirected. this view contain a box to specify how you want to create the report, small summary Will be display on the view, also the button to download the Excel file Will be disponible to get the Excel file of the report. feel free to send recommendations about this  
+
+8 - Notifications:
+
+-alerts any time you initialize or go back to the check registration view, depending if there's any maintenance uncompleted or the date of service is near
+-alerts showing the number of pending maintenances
+-alerts showing the number of future maintenances
+
+there's also an emerging square as notification showing how many maintenances you have uncompleted, giving the posibility to show just this types of maintenances in the special view detailed before on the list of features on manage maintenances. clicking on "check" you'll be redirected to the special view to see all this maintenances and the type of status they have
+
+
+9 - basic security:
+
+-login to register user's
+-limited Access to authenticated users 
+
+at the moment of run the server for the first time you'll be redirected to login view, you need to create the account and then you could use all the features of the system. there's also the button "sign out" to close your session on the system, asking you for log into once again. this system is not multiuser, it's not separated in modules for type of user, however, this system was not designed to need multiple type of users using it
+
+10 - backups:
+
+-Automatic database backups
+
+-Configurable retention period (default: last 7 days)
+
+-Automatic deletion of old backups
+
+-Operates independently of the system task scheduler
+
+if you feel you'll need to save something important, make sure to take the backup generated or a copy of it and then paste it on other folder.
+
+Project architecture:
+
+Backend: Django + Django REST Framework
+
+Frontend: HTML + CSS + JavaScript puro
+
+Database: PostgreSQL
+
+Pattern:
+
+-Layering
+
+-Services for business logic
+
+-ViewSets for REST APIs
+
+-Serializers for data adaptation
+
+-Atomicity in critical operations
+
+-Internationalization (ES / EN)
+
+Limitations: 
+
+-Functional interface, but not geared towards advanced visual design.
+
+-Does not include tax invoicing.
+
+-Does not include advanced user control.
+
+-Does not support concurrent multi-user networking.
+
+-Tested only on Windows.
+
+The relational model was designed to be scalable, meaning that all models or entities can coexist in harmony, some other things like formats of any attribute data are expected to be used, that's the reason why the system gives freedom to write and fill field depending on your rules having a long length for more characters and the inputs in the views have not an explicit limit or format to follow. you can take advantage of the large fields to include some other complex details, like description or notes, just to save extensed data. respect all default rules in the system to improve the experience of work. The use of these functionalities is the sole responsibility of the system user.
+
+When it comes to mention enviroment variables of the operative system (Windows) it means you don't need to set any external enviroment variable of Windows or add anything else to make the system work, the system Works 100% without any extra configuration on your enviroment variables from Windows, you just need to follow the instructions to install and clone the repository to make the system work. Feel free to send any recomendations or comments to my personal mail, once again, thank you for trust the workshopAdmin Project
+
+//User guide (español):
+
+Este documento se creó para ayudar a los usuarios a comprender el funcionamiento de este producto (workshopAdmin), sus características, cuáles son y algunos puntos generales importantes sobre el sistema.
+
+¿Qué hace el sistema?
+
+workshopAdmin es una herramienta útil para gestionar datos de talleres. Esto significa que todos los datos relacionados con este sistema se pueden guardar en cualquier momento para facilitar el control de las tareas y actividades, ahorrando tiempo en la gestión de registros y añadiendo persistencia a la información importante necesaria para mejorar el trabajo en este taller. Estas son las principales características del sistema:
+
+1 - Gestionar mantenimientos:
+- Crear, recuperar, actualizar y cancelar mantenimientos en cualquier momento
+- Programar sus futuros mantenimientos
+- Comparar todos sus mantenimientos (según sus características)
+- Historial de mantenimientos de cualquier cliente
+- Filtrar por características de mantenimiento
+- Estado del mantenimiento (pendiente, completado o próximo)
+- Página/vista especial para consultar los mantenimientos pendientes o no completados
+
+La vista principal para añadir o actualizar mantenimientos es "Añadir mantenimiento", con varias opciones, como añadir repuestos si se utiliza alguno en el mantenimiento, mostrando un cuadro que muestra los repuestos según la cantidad real de estos en el inventario. Esta función se detallará más adelante. Los mantenimientos con estado "completado" no son editables porque significa que el servicio se completó definitivamente y el cliente estuvo de acuerdo con la cotización del servicio. Por lo tanto, este mantenimiento permanece como historial o registros de archivo para futuras consideraciones sobre el vehículo del cliente o para realizar un análisis detallado sobre este flujo de trabajo en el negocio, considerando detalles importantes y detectando datos para futuras soluciones a los clientes y modernizando la forma de trabajar. Cualquier estado de tarea es completamente editable. La vista principal del sistema (verificar registro o check registration) tiene la posibilidad de mostrar mantenimientos presionando el botón llamado "mantenimiento" para mostrar cada mantenimiento, y presionando el botón vehículo, se mostrará el vehículo. Ambas entidades tienen sus propias opciones de filtro para aplicar presionando la opción "Aplicar filtros". Puede tener un número ilimitado de entidades en ambos, organizando los diferentes grupos de datos por secciones. Si el usuario necesita consultar el historial de un vehículo, deberá ingresar la matrícula en el cuadro de búsqueda que aparece después de presionar el botón "Buscar" e ingresar el valor digitado. Posteriormente, podrá aplicar cualquier filtro necesario para ordenar y filtrar los mantenimientos que recibe este vehículo y cuándo. Sin embargo, los filtros se pueden aplicar siempre y no necesariamente con la matrícula previamente ingresada.
+
+2 - Administrar vehículos/clientes:
+
+- Registrar obligatoriamente los vehículos asociados a los clientes (en "Agregar vehículo")
+- Crear, recuperar y eliminar vehículos, incluyendo a su cliente. -Actualizar solo los datos editables de clientes y vehículos. Las características individuales, como el modelo o el ID del cliente, no se pueden modificar.
+-Añadir más vehículos si los clientes tienen más.
+-Asignar un nuevo propietario a un vehículo, registrándolo en la vista "Añadir vehículo". Lo mismo ocurre con la asignación de un nuevo vehículo a un cliente.
+-Historial de todos los vehículos registrados de un cliente a lo largo del tiempo y en la actualidad.
+
+La vista "Consultar registro" incluye un botón de búsqueda que muestra un cuadro para buscar mantenimientos o vehículos, según la entidad seleccionada al pulsar el botón "Mantenimiento" y "Vehículo". Al escribir la matrícula del vehículo en el cuadro de búsqueda, no es necesario escribirla completa. Escriba los caracteres que recuerde de la matrícula y el sistema buscará todas las matrículas comenzando por los caracteres introducidos, recuperando todas las posibles coincidencias. "Mantenimiento" si pulsa el botón "Mantenimiento" o "Vehículo" en caso contrario. La entidad predeterminada que se muestra en la vista "Consultar registro" es "Mantenimiento". Puede agregar un vehículo/cliente en la vista "Agregar vehículo", con espacio para cargar cuatro imágenes. Debe agregar al menos una imagen para aclarar qué tipo de vehículo se registró, además de los datos incluidos. Puede agregar nuevas imágenes, reemplazando las anteriores si las cuatro fotos ya están agregadas. La vista "Verificar registro" permite consultar más detalles sobre los mantenimientos o vehículos registrados haciendo clic en las tarjetas mostradas. Estas tarjetas pueden llevarlo a la vista "Agregar mantenimiento" o "Agregar vehículo", donde todos los campos de datos se completan con la información de las entidades
+
+3 - "Inventario":
+
+workshopAdmin NO ES un sistema de inventario y no pretende reemplazar uno, ni funcionar como un almacén de repuestos. Esta función se utiliza para incluir repuestos en la cotización, administrar herramientas para los servicios y controlar la administración de los repuestos disponibles en el negocio debido a que la mayoría de los talleres no cuentan con un inventario propio, la mayoría de los repuestos utilizados son solicitados por los empleados del taller o comprados a terceros y no venden estos repuestos por separado. 
+
+Funciona así:
+- Puede crear, recuperar, actualizar y eliminar todas las entidades incluidas (repuestos, categorías, proveedores y llegadas) en la función de inventario, excepto las llegadas, que funcionan como un registro de los repuestos entregados, aumentando el número de unidades de un solo repuesto en el inventario (el que se entregó). Las llegadas no son editables, pero puede eliminarlas; al eliminar un repuesto específico, se eliminarán las llegadas asociadas a ese repuesto.
+- Puede buscar repuestos y llegadas aplicando filtros; ambas entidades tienen sus propios campos de filtro.
+- Puede controlar la disponibilidad de los repuestos utilizando las llegadas para agregar más repuestos al stock de unidades de este repuesto. Este registro también registra la fecha de llegada. Al agregar un servicio de mantenimiento e incluir un cierto número de unidades de repuesto, esta cantidad se restará al stock real de repuestos.
+- La lista de secciones se muestra como tablas en la vista de inventario mediante paginación, según el número de registros que tenga activos en su sistema.
+
+Para cambiar entre entidades, debe cambiar el valor seleccionado en el cuadro de selección de la vista a la entidad que desea mostrar. Esto también cambiará el formulario para agregar más registros y las opciones de filtro en el aplicador de filtros. Puede agregar registros y aplicar filtros pulsando los botones "Agregar registro" y "Establecer filtros" detallados anteriormente. Esta función no es obligatoria; puede evitar la implementación de repuestos si el negocio no registra los repuestos utilizados o no los utiliza; sin embargo, es muy recomendable si los utiliza. si en algún momento el stock de cierto repuesto llega a 0, no se podrá utilizar en los mantenimientos hasta que lleguen mas unidades por parte de los proveedores
+
+
+4 - Documentos:
+
+- El sistema puede crear documentos PDF como comprobantes de servicios de cualquier tipo de mantenimiento.
+- Los comprobantes pueden utilizarse como factura o cotización para los clientes.
+- El sistema puede guardar todos estos documentos si el usuario necesita verificar si el mantenimiento se realizó correctamente.
+- El sistema puede generar o mostrar estos documentos en inglés o español, según el idioma del navegador del usuario.
+- El sistema puede enviar este PDF por correo electrónico, añadiendo cualquier descripción opcional.
+
+Al acceder a los detalles de mantenimiento haciendo click en la tarjeta en la vista de registro de cheques, encontrará un botón llamado "obtenerPDF" para descargar el archivo PDF de la cotización del mantenimiento. Puede darle cualquier otro uso además de los mencionados anteriormente.
+
+IMPORTANTE: El archivo PDF lo indica, pero este no tiene ningún reconocimiento fiscal ni valor legal para ser utilizado en ningún sistema de facturación electrónica. El uso de este documento es entre el negocio y el cliente. Por favor, sea responsable con el uso que le dé.
+
+5 - Remitente de correo:
+
+- El sistema puede enviar correos a los clientes. Puede elegir si desea agregar o no archivos sobre servicios como cotizaciones u otros documentos.
+- Las respuestas llegan al correo del establecimiento.
+- El sistema puede agregar varios tipos de archivos en un solo correo.
+
+Al seleccionar "Mantenimiento" en el registro de verificación, verá un botón de "Enviar correo" dentro de la tarjeta de mantenimiento. Al hacer click en él, el sistema le redirigirá al envió de correo, con el correo del cliente ya agregado, para que simplemente escriba el correo y agregue los archivos.
+
+El remitente tiene un límite de 7 archivos por correo debido a razones técnicas. Debe actualizar el correo de su establecimiento para recibir las respuestas de los clientes.
+
+6 - Gestionar establecimiento:
+Actualice los campos de mantenimiento, incluyendo correo electrónico, dirección, número de teléfono y otros. Esto es útil para identificar su negocio en el comprobante PDF. Después de agregar su correo electrónico en la vista de establecimiento, recibirá todas las respuestas de los clientes a su correo electrónico, ya sea para el negocio o para su correo personal.
+
+Debajo de la tabla de mantenimiento/vehículos, en el checkRegistration, hay un recuadro con dos botones para acceder al inventario o actualizar los datos de su establecimiento. Estos botones le redirigirán a esas vistas.
+
+7 - Informes:
+
+- Generación de informes estadísticos en Excel
+- Informes mensuales o anuales
+- Informes en inglés o español, según el idioma del navegador del usuario
+
+Los informes contienen información relevante guardada en el sistema, como resúmenes de mantenimiento, número total de clientes atendidos y otros datos. Para descargar y generar un informe estadístico en Excel, vaya a la sección "Crear informe" o equivalente, haga clic allí y será redirigido. Esta vista contiene un cuadro para especificar cómo desea crear el informe. Se mostrará un breve resumen. También podrá descargar el archivo Excel del informe. No dude en enviarnos sus recomendaciones.
+
+8 - Notificaciones:
+
+- Alertas al iniciar o volver a la vista de registro de verificación, dependiendo de si hay algún mantenimiento pendiente o si la fecha de servicio está próxima.
+- Alertas que muestran el número de mantenimientos pendientes.
+- Alertas que muestran el número de mantenimientos futuros.
+
+También hay un cuadro emergente como notificación que muestra el número de mantenimientos pendientes, lo que permite mostrar solo este tipo de mantenimientos en la vista especial detallada anteriormente en la lista de funciones de gestión de mantenimientos. Al hacer clic en "Verificar", se le redirigirá a la vista especial para ver todos estos mantenimientos y su estado.
+
+9 - Seguridad básica:
+
+- Iniciar sesión para registrar usuarios
+- Acceso limitado a usuarios autenticados
+
+Al iniciar el servidor por primera vez, se le redirigirá a la vista de inicio de sesión. Deberá crear una cuenta para poder usar todas las funciones del sistema. También encontrará el botón "Cerrar sesión" para cerrar la sesión y solicitarle que inicie sesión nuevamente. Este sistema no es multiusuario ni está dividido en módulos por tipo de usuario; sin embargo, no fue diseñado para que lo usen varios tipos de usuarios.
+
+10 - Copias de seguridad:
+
+- Copias de seguridad automáticas de la base de datos
+
+- Periodo de retención configurable (predeterminado: últimos 7 días)
+
+- Eliminación automática de copias de seguridad antiguas
+
+- Funciona independientemente del programador de tareas del sistema
+
+Si cree que necesita guardar algo importante, asegúrese de guardar la copia de seguridad generada o una copia de ella y luego pegarla en otra carpeta.
+
+Arquitectura del proyecto
+
+Backend: Django + Django REST Framework
+
+Frontend: HTML + CSS + JavaScript
+
+Base de datos: PostgreSQL
+
+Patrón:
+
+Separación de capas
+
+Servicios para lógica de negocio
+
+ViewSets para API REST
+
+Serializers para adaptación de datos
+
+Atomicidad en operaciones críticas
+
+Internacionalización (ES / EN)
+
+Limitaciones conocidas
+
+Interfaz funcional pero no orientada a diseño visual avanzado
+
+No incluye facturación fiscal
+
+No incluye control de usuarios avanzado
+
+No es multiusuario concurrente en red
+
+Probado solo en Windows
+
+
+El modelo relacional fue diseñado para ser escalable, lo que significa que todos los modelos o entidades pueden coexistir en armonía. Se espera el uso de otros aspectos, como el formato de los datos de cualquier atributo. Por eso, el sistema ofrece libertad para escribir y rellenar campos según las reglas, con una longitud mayor para más caracteres, y las entradas en las vistas no tienen un límite explícito ni un formato a seguir. Se pueden aprovechar los campos grandes para incluir otros detalles complejos, como descripciones o notas, para guardar datos extensos. Respete todas las reglas predeterminadas del sistema para mejorar la experiencia de trabajo. El uso de estas funcionalidades es responsabilidad exclusiva del usuario.
+
+En cuanto a las variables de entorno del sistema operativo (Windows), no es necesario configurar ninguna variable de entorno externa de Windows ni añadir nada adicional para que el sistema funcione correctamente. El sistema funciona al 100 % sin ninguna configuración adicional en las variables de entorno de Windows; solo hay que seguir las instrucciones para instalar y clonar el repositorio. No duden en enviarme cualquier recomendación o comentario a mi correo personal, una vez más, gracias por confiar en el proyecto workshopAdmin.
+
+

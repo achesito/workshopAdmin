@@ -1,0 +1,147 @@
+from rest_framework import viewsets, status
+import json
+from rest_framework.response import Response
+from rest_framework.generics import get_object_or_404
+from rest_framework.decorators import action
+from ..services import usuarioService
+from ..serializer import registroUsuarioSerializer
+from ..services import *
+from ..serializer import *
+
+
+class UsuarioViewSet(viewsets.ModelViewSet):
+    queryset = usuarioService.objects()
+    serializer_class = registroUsuarioSerializer
+    
+    #POST api/usuario/
+    def create(self, request, *args, **kwargs):
+        return super().create(request, *args, **kwargs)
+    
+    #GET api/usuario/creado/?usuario=
+    @action(detail=False, methods=['get'], url_path='creado')
+    def registrado(self, request):
+        user1 = request.GET.get('usuario')
+        usuario = usuarioService.encontrar(user=user1)
+        print(usuario)
+        if usuario is not None:
+            return Response({'bienvenido' : True}, status=status.HTTP_200_OK)
+        else:
+            return Response({'error' : 'sus credenciales no corresponden'}, status=status.HTTP_403_FORBIDDEN)
+    
+class clienteViewSet(viewsets.ModelViewSet):
+    queryset = clienteService.objects()
+    serializer_class = clienteSerializer
+    
+    def create(self, request, *args, **kwargs):
+        source = json.loads(request.body)
+        correo = source.get('correo')
+        dui = source.get('dui')
+        if clienteService.encontrar(correo) is not None and clienteService.encontrar(correo).dui != dui:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return super().create(request, *args, **kwargs)
+    
+class vehiculoViewSet(viewsets.ModelViewSet):
+    queryset = vehiculoService.objects()
+    serializer_class = vehiculoSerializer
+    
+    def create(self, request, *args, **kwargs):
+        cliente = json.loads(request.body)
+        if vehiculoService.encontrar(cliente) == False:
+            return super().create(request, *args, **kwargs)
+        else:
+            return Response({"error":"el cliente dueño no esta registrado"}, status=status.HTTP_404_NOT_FOUND)
+        
+    @action(detail=False, methods=['get'], url_path='getPlaca')
+    def getByPlaca(self, request):
+        placa = request.GET.get('placa')
+        placas = vehiculoService.primeros(placa)
+        #necesario para transformar la lista en Json
+        serializer = self.get_serializer(placas, many=True)
+        if len(placas) > 0:
+            return Response(serializer.data)
+        else:
+            return Response({'error': 'no encontrado'}, status=status.HTTP_400_BAD_REQUEST)
+        
+    def destroy(self, request, *args, **kwargs):
+        return super().destroy(request, *args, **kwargs)
+        
+    def update(self, request, *args, **kwargs):
+        return super().update(request, *args, **kwargs)
+    
+class vehiculoImagenViewSet(viewsets.ModelViewSet):
+    queryset = imagenService.objects()
+    serializer_class = vehiculoImagenSerializer
+    
+    def create(self, request, *args, **kwargs):
+        return super().create(request, *args, **kwargs)
+    
+    @action(detail=False, methods=['get'], url_path="imagen")
+    def getByPlaca(self, request):
+        placa = request.GET.get('placa')
+        vehiculoimagen = imagenService.getVehiculo(placa)
+        serializer = vehiculoImagenSerializer(vehiculoimagen, many=False, context={'request': request})
+        return Response(serializer.data)
+    
+    @action(detail=False, methods=['get'], url_path="imagenes")
+    def getAll(self, request):
+        placa = request.GET.get('placa')
+        vehiculoimagen = imagenService.getVehiculos(placa)
+        serializer = vehiculoImagenSerializer(vehiculoimagen, many=True, context={'request': request})
+        return Response(serializer.data)
+    
+    def update(self, request, *args, **kwargs):
+        return super().update(request, *args, **kwargs)
+    
+class respuestoViewSet(viewsets.ModelViewSet):
+    #obtener la lista de todos los repuestos en la db 
+    queryset = repuestoService.objects()
+    serializer_class = repuestoSerializer
+    
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
+    
+class mantenimientoViewSet(viewsets.ModelViewSet):
+    queryset = mantenimientoService.objects()
+    serializer_class = mantenimientoSerializer
+    
+    def create(self, request, *args, **kwargs):
+        return super().create(request, *args, **kwargs)
+    
+    def update(self, request, *args, **kwargs):
+        return super().update(request, *args, **kwargs)
+    
+    def destroy(self, request, *args, **kwargs):
+        return super().destroy(request, *args, **kwargs)
+    
+    @action(detail=False, methods=['get'], url_path='mantVehiculo')
+    def getByPlaca(self, request):
+        #Aqui se determina cual sera el filtro de busqueda,con el .get('placa')
+        placa = request.GET.get('placa')
+        mantenimientos = mantenimientoService.getByplaca(placa)
+        serializer = mantenimientoSerializer(mantenimientos, many=True, context={'request' : request})
+        return Response(serializer.data)
+        
+    
+class detallesRepuestoViewSet(viewsets.ModelViewSet):
+    queryset = detallesRepuestoService.objects()
+    serializer_class = detallesRepuestoSerializer
+    
+    def create(self, request, *args, **kwargs):
+        return super().create(request, *args, **kwargs)
+    
+    @action(detail=False, methods=['get'], url_path="mantenimiento")
+    def getByPlaca(self, request):
+        id = request.GET.get('idMantenimiento')
+        detalles = detallesRepuestoService.getByMantenimiento(id)
+        serializer = detallesRepuestoSerializer(detalles, many=True, context={'request': request})
+        return Response(serializer.data)
+    
+    def get_object(self):
+        mantenimientoId = self.kwargs['mantenimiento']
+        repuestoId = self.kwargs['repuesto']
+        return get_object_or_404(
+            DetallesRepuesto,
+            mantenimiento=mantenimientoId,
+            repuesto=repuestoId
+        )

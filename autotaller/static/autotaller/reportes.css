@@ -1,0 +1,66 @@
+.container {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+.form {
+    display: flex;
+    padding: 20px;
+    text-align: center;
+    border: .6px solid #939393;
+    color: #000;
+    background-color: #ffffff;
+    margin-bottom: 30px;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+}
+
+
+.form select,
+.form button {
+    padding: 8px;
+    margin-right: 10px;
+    background-color: #c9c8ff;
+    color: #000000;
+    font-size: 16px;
+}
+
+.form button{
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th, .table td {
+    border: 1px solid #000;
+    padding: 8px;
+    text-align: center;
+}
+
+.table th {
+    background-color: #9686ff;
+}
+
+.descarga {
+    margin-top: 20px;
+}
+
+.titulo {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+h1{
+    text-align: center;
+    font-size: clamp(16px, 2vw + .7rem, 40px) !important;
+    font-weight: 500;
+}

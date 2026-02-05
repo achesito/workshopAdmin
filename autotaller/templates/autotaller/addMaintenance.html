@@ -1,0 +1,590 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{%static 'autotaller/normalize.css' %}?v={{ version }}">
+    <link rel="stylesheet" href="{%static 'autotaller/addMaintenance.css'%}?v={{ version }}">
+    <link rel="stylesheet" href="{%static 'autotaller/header.css' %}">
+    <script type="module" src="{% static 'autotaller/js/addmaintenance/getSpares.js'%}" ></script>
+    <script src="{% static 'autotaller/js/addmaintenance/getSpareCode.js'%}"></script>
+    <script src="{% static 'autotaller/js/addmaintenance/addMaintenance.js'%}"></script>
+    <script src="{%static 'autotaller/js/addmaintenance/getmaintenance.js'%}"></script>
+    <script src="{%static 'autotaller/js/addmaintenance/getDetails.js'%}"></script>
+    <script src="{%static 'autotaller/js/addmaintenance/loadMaintenance.js'%}"></script>
+    <script src="{%static 'autotaller/js/addmaintenance/updateDetails.js'%}"></script>
+    <script src="{%static 'autotaller/js/addmaintenance/setPlates.js'%}"></script>
+    <script src="{%static 'autotaller/js/addmaintenance/loadSpares.js'%}"></script>
+    <script src="{%static 'autotaller/js/addmaintenance/setCategories.js'%}"></script>
+    <script src="{%static 'autotaller/js/getInvoice.js'%}"></script>
+    <script src="{%static 'autotaller/js/updateInvoice.js'%}"></script>
+    <title>maintenance registration</title>
+</head>
+<body>
+    <header>
+        <div class="header-display">
+            <div class="options">
+                <nav class="nav-options">
+                        <ul class="ul-options">
+                            <li class="li-options" id="li-options0"><a href="/checkRegistration">Home</a></li>
+                            <li class="li-options" id="li-options1"><a href="">add Maintenance</a></li>
+                            <li class="li-options" id="li-options2"><a href="/addVehicle">add vehicle</a></li>
+                            <li class="li-options" id="li-options3"><a href="/reports">create report</a></li>
+                            <li class="li-options" id="li-options4"><a href="/agenda">scheduled</a></li>
+                            <script>
+                                function removeMore(){
+                                    if (window.innerWidth > 1120){
+                                        document.getElementById('li-more').style.display = 'none';
+                                    }
+                                    else{
+                                        document.getElementById('li-more').style.display = 'block';
+                                    }
+                                }
+                                function load(){
+                                    const width = 840;
+                                    if (window.innerWidth <= 840 && document.getElementById('li-container').lastChild.textContent != "RESPONSABILIDAD"){
+                                        const div = document.createElement('div');
+                                        const a = document.createElement('a');
+                                    }
+                                    else{
+                                        if (window.innerWidth > 840 && document.getElementById('li-container').lastChild.textContent === "RESPONSABILIDAD"){
+                                            document.getElementById('li-container').lastChild.remove();
+                                        }
+                                }
+                            }
+                                window.addEventListener("resize", removeMore);
+                                window.addEventListener("resize", load);
+                                document.addEventListener('DOMContentLoaded',load);
+                            </script>
+                            <script>
+                                document.getElementById('li-more').addEventListener('click', (event)=>{
+                                    document.getElementById('click-counter').textContent = (parseInt(document.getElementById('click-counter').textContent) + 1).toString();
+                                    const doc = document.getElementById('li-container');
+                                    const click_count = parseInt(document.getElementById('click-counter').textContent);
+                                    doc.classList.toggle('active');
+                                });
+                            </script>
+                            <script>
+                                const element = document.getElementById('li-more');
+                                const li = window.getComputedStyle(document.getElementById('li-more'));
+                                const observer = new MutationObserver(()=>{
+                                    if(li.display === 'none'){
+                                        document.getElementById('li-container').style.display = 'none';
+                                    }
+                                    else{
+                                        document.getElementById('li-container').style.display = 'flex';
+                                    }
+                                });
+                                observer.observe(element, {attributes : true});
+                            </script>
+                        </ul>
+                </nav>
+                <button class="responsive-button" id="responsive-button"></button>
+                <script>
+                    document.getElementById('responsive-button').addEventListener('click', function(){
+                        const menu = document.getElementById('responsive-menu');
+                        menu.classList.toggle('acti');
+                        document.getElementById('responsive-button').style.left = '100%';
+                    });
+                </script>
+                <div class="responsive-menu" id="responsive-menu">
+                    <button class="button-close-menu" id="button-close-menu"><i class="fa-solid fa-xmark"></i></button>
+                    <script>
+                        document.getElementById('button-close-menu').addEventListener('click', function(){
+                        const menu = document.getElementById('responsive-menu');
+                        menu.classList.toggle('acti');
+                        document.getElementById('responsive-button').style.left = '90%';
+                    });
+                    </script>
+                    <div class="responsive-structure" id="responsive-structure">
+                            <ul class="ul-structure" id="ul-structure">
+                                <li class="li-options-responsive" id="li1"><a href="/checkRegistration"></a>home</li>
+                                <li class="li-options-responsive" id="li1"><a href="/consultarRegistro">add maintenance</a></li>
+                                <li class="li-options-responsive" id="li2"><a href="/agregarVehiculo">add vehicle</a></li>
+                                <li class="li-options-responsive" id="li3"><a href="/reportes/">create report</a></li>
+                                <li class="li-options-responsive" id="li4"><a href="/agenda/">agenda</a></li>
+                            </ul>
+                    </div>
+                </div>
+        </div>
+    </header>
+    <span id="click-counter">0</span>
+    <div>
+        <form class="maintenance__form" id="form__maintenance" method="post">
+            {%csrf_token%}
+            <meta name="csrf_token" content="{{ csrf_token }}">
+            <script>
+            let param = window.location.pathname;
+            let params = param.split('/');
+            const data = params[2];
+            const len = params.length;
+            if (len > 3){
+                document.addEventListener('DOMContentLoaded', async(e) =>{
+                    await loadMaintenance();
+                });
+            }
+            </script>
+            <h2>maintenance registration</h2>
+            <fieldset class="fieldset__form">
+                <textarea class="text__diagnosis" id="diagnosis" placeholder="diagnosis maintenance" required></textarea>
+            </fieldset>
+            <fieldset class="fieldset__form">
+                <select name="type" id="status" class="input__form" required>
+                    <option data-id="pending">pending</option>
+                    <option data-id="completed">completed</option>
+                    <option data-id="upcoming">upcoming</option>
+                    <option data-id="overdue">overdue</option>
+                </select>
+            </fieldset>
+            <fieldset class="fieldset__form">
+                <input type="date" id="date" class="input__form input__date"/>
+            </fieldset>
+            <fieldset class="fieldset__form">
+                <input type="number" class="input__form" id="cost_job" placeholder="cost_job" max="999.99" value="0.00" min="0" required/>
+            </fieldset>
+            <fieldset class="fieldset__form">
+                <select name="type" id="type__maintenance" class="input__form" required>
+                    <option>preventive</option>
+                    <option>corrective</option>
+                </select>
+            </fieldset>
+            <fieldset class="fieldset__form">
+                <input type="text" class="input__form" id="vehicle__input" placeholder="car plate" required/>
+                <ul id="platescontainer" class="plates__container">
+                    <li class="plate__space plate1"></li>
+                    <li class="plate__space plate2"></li>
+                    <li class="plate__space plate3"></li>
+                </ul>
+            </fieldset>
+            <fieldset class="fieldset__form">
+                <input type="text" class="input__form" id="payment__input" placeholder="payment method" required/>
+            </fieldset>
+            <script>
+                //script de la funcion para autocompletar
+                let del = false;
+                let num = 0;
+                async function setItems(){
+                    let list = await SetPlates(String(document.getElementById('vehicle__input').value));
+                    if(document.getElementById('vehicle__input').value.length > 0){
+                        for(let n = 0; n < list.length; n++){;
+                            document.getElementById('platescontainer').children[n].textContent = String(list[n].plate); 
+                            document.getElementById('platescontainer').style.border = '1px solid #000';
+                        }
+                    }
+                    //no mover para no alterar el mostrado de datos
+                    num = 0;
+                    document.getElementById('platescontainer').addEventListener('click', (e)=>{
+                        if(e.target.classList.contains('plate__space') && num < 1){
+                            document.getElementById('vehicle__input').value = e.target.textContent;
+                            num += 1;
+                            document.querySelectorAll('.plate__space').forEach(el => el.textContent = '');
+                            document.getElementById('platescontainer').style.border = '0px';
+                        }
+                    });
+                }
+                document.getElementById('vehicle__input').addEventListener('keydown', (e)=>{
+                    if (e.key === 'Backspace' || e.key === 'Delete'){
+                        del = false;
+                    }
+                });
+                document.getElementById('vehicle__input').addEventListener('input', async(e)=>{
+                    document.getElementById('platescontainer').childNodes.forEach(el =>{
+                        el.textContent = '';
+                    });
+                    if (document.getElementById('vehicle__input').value.length === 0){
+                        document.getElementById('platescontainer').style.border = '0px';
+                        return;
+                    }
+                    else{
+                        await setItems();
+                    }
+                });
+                document.getElementById('status').addEventListener('change', (e)=>{
+                    let date =  new Date().toLocaleDateString("en-CA");
+                    //sujeto a cambios
+                    if(document.getElementById('status')[document.getElementById('status').selectedIndex].dataset.id === "completed" || document.getElementById('status')[document.getElementById('status').selectedIndex].dataset.id === "overdue"){
+                        if(document.getElementById('date').value > data) document.getElementById('date').value = date;
+                        document.getElementById('date').max = date;
+                    }
+                    else{
+                        document.getElementById('date').max = "";
+                    }
+                });
+            </script>
+            <fieldset class="fieldset__form" id="fieldset__parts">
+                <div class="part__details">
+                    <button id="get__document" class="spare__button" type="button">getPdf</button>
+                    <script>
+                        document.getElementById('get__document').addEventListener('click', (e)=>{
+                            newInvoice(document.getElementById('vehicle__input').value, String(navigator.language.split('-')[0]));
+                        });
+                    </script>
+                    <button name="part" id="parts" class="save__button spare__button" type="button">add spare
+                    </button>
+                    <!---type button para cambiar su comportamiento respecto a los campos required-->
+                    <button type="button" id="delete__spare" class="button__table" onclick="delet()">delete</button>
+                    <script>
+                        document.getElementById('parts__boton').addEventListener('click', async()=>{
+                            let option = "";
+                            for (let i = 0; i < document.getElementById('parts').length; i++){
+                                if (document.getElementById('parts')[i].selected === true){
+                                    //encontrar el part seleccionado y guardar el codigo
+                                    option += document.getElementById('parts')[i].id;
+                                    break;
+                                }
+                            }
+                            let exist = false;
+                            let name = document.createElement('div');
+                            name.className = 'spare__field' + " " + option;
+                            //texto actual de la etiqueta "select"
+                            name.textContent = document.getElementById('parts').value;
+                            let price = document.createElement('div');
+                            price.className = 'spare__field';
+                            price.textContent = String((await getByCode(option)).cost_job);
+                            let quantity = document.createElement('input');
+                            quantity.type = 'number';
+                            quantity.max = "20";
+                            quantity.min = "1";
+                            quantity.value = 1;
+                            quantity.className = 'spare__field';
+                            for(let i = 0; i < document.getElementById('sec__product').childElementCount; i++){
+                                //verificar que el part ha sido agregado
+                                if (name.textContent === document.getElementById('sec__product').children[i].textContent){
+                                    exist = true;
+                                }
+                            }
+                            if (exist === false){
+                                document.getElementById('sec__product').appendChild(name);
+                                document.getElementById('sec__price').appendChild(price);
+                                document.getElementById('sec__quantity').appendChild(quantity);
+                            }
+                        });
+                    </script>
+                    <script>
+                        function delet(){
+                            if (document.getElementById('sec__product').childElementCount > 0){
+                                document.getElementById('sec__product').removeChild(document.getElementById('sec__product').lastChild);
+                                document.getElementById('sec__price').removeChild(document.getElementById('sec__price').lastChild);
+                                document.getElementById('sec__quantity').removeChild(document.getElementById('sec__quantity').lastChild);
+                            }
+                        }
+                    </script>
+                </div>
+                <div class="spare__table" id="spare__table">
+                    <div class="details__header">
+                        <div id="sec__product" class="sec__product prod__details">name</div>
+                        <div id="sec__price" class="sec__product prod__details">price</div>
+                        <div id="sec__quantity" class="sec__product prod__details">quantity</div>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="fieldset__form fieldset__cost">
+                <input type="submit" id="add__input" class="add__input" value="add"/>
+                <script>
+                    document.getElementById('form__maintenance').addEventListener('submit', async (e) =>{
+                        //evitamos que se cargue automaticamente al apretar el boton por si algun proceso no ha acabado
+                        e.preventDefault();
+                        let acumCot = 0;
+                        let acum = 0;
+                        let Diagnosis = document.getElementById('diagnosis').value;
+                        let status = document.getElementById('status').value;
+                        let dat = document.getElementById('date').value;
+                        let cost = parseFloat(document.getElementById('cost_job').value);
+                        let Type = document.getElementById('type__maintenance').value;
+                        let payment = document.getElementById('payment__input').value;
+                        if (document.getElementById('spare__table').children.length > 1){
+                            document.querySelectorAll('.details__header').forEach(e =>{
+                                if (acum > 0){
+                                    acumCot += parseFloat(e.children[1].textContent) * parseFloat(e.children[2].children[0].value);
+                                }
+                                acum +=1;
+                            }); 
+                        }
+                        acumCot += cost;
+                        let Car = document.getElementById('vehicle__input').value;
+                        const Mant = {
+                            diagnosis : Diagnosis,
+                            cost_job : cost,
+                            task_status : status,
+                            date: dat,
+                            type : Type,
+                            total : acumCot.toFixed(2),
+                            vehicle : Car,
+                            payment_method : payment
+                        };
+                        let metod = "";
+                        if (len > 3){
+                            metod = 'PUT';
+                        }
+                        else{
+                            metod = 'POST';
+                        }
+                        const response = await insertMant(Mant, metod, data);
+                        e.preventDefault();
+                        acum = 0;
+                        if (document.getElementById('spare__table').children.length > 0){
+                            document.querySelectorAll('.details__header').forEach(async(e) =>{
+                                if (acum > 0){
+                                    let quant = parseInt(e.children[2].children[0].value);
+                                    let tot = parseFloat(e.children[1].textContent) * parseFloat(e.children[2].children[0].value);
+                                    let code = e.children[0].dataset.id;
+                                    let maint = response.idMaintenance;
+                                    const details = {
+                                        quantity : quant,
+                                        total : tot.toFixed(2),
+                                        spare : code,
+                                        maintenance : maint
+                                    };
+                                    if (len > 3){
+                                        const resp = await updateDetails(details, response.idMaintenance, code)
+                                    }
+                                    else{
+                                        let resp = await insertDetails(details);
+                                    }
+                                }
+                                acum += 1;
+                            });
+                        }
+                        window.location.reload();
+                    });
+                </script>
+            </fieldset>
+        </form>
+        <div class="black__space" id="black_space">
+            <div class="spare__elements" id="spare__elements">
+                <nav class="nav__spares">
+                    <div class="data__space">
+                        <input type="text" class="search__input" id="searched__spare" maxlength="50" placeholder="search spare by name"/>
+                        <div class="search__input search__box">
+                            <select class="select__typeCategorie" id="searched__category">
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="button__spareSection">
+                            <button type="button" class="search__input spare__searcher" id="search__spares">submit</button>
+                        </div>
+                    <div class="button__spareSection warning__text" >no name and categorie typed</div>
+                    <div class="data__space spare__frame" id="data__space">
+                        <div class="subdata__space" id="frame__content">
+                            <div class="data__cell">name</div>
+                            <div class="data__cell">categorie</div>
+                            <div class="data__cell">price</div>
+                            <div class="data__cell">selected</div>
+                        </div>
+                    </div>
+                    <div class="data__space spare__buttons">
+                         <!-- desde aqui mañana 25/11/25 -->
+                        <button class="button__spare" id="addSpare">add to list</button>
+                        <button class="button__spare cancel__addition">cancel</button>
+                    </div>
+                </nav>
+                <!--seccion utilizada para manejar animaciones y enviar datos-->
+                <script>
+                    async function createOptions(){
+                        let resp = await getTypes();
+                        for (let i = 0; resp.length; i++){
+                            for (let j = 0; j < resp[i][1].length; j++){
+                                let opt = document.createElement('option');
+                                opt.textContent = resp[i][1][j];
+                                opt.value = resp[i][1][j];
+                                document.getElementById('searched__category').append(opt);
+                            }
+                        }
+                    }
+
+                    function getName(arg){
+                        if (String(arg).length === 0) return ""
+                        else return String(arg);
+                    }
+                    function delData(categ, newCateg){
+                        document.querySelectorAll('.subdata__space').forEach(e =>{
+                            if (String(e.children[0].textContent) != "name") e.remove();
+                        });
+                    }
+                </script>
+                <script>
+                async function setFields(categ, nam){
+                    if (String(document.getElementById("searched__category").value).length == 0){
+                        document.querySelectorAll('.warning__text')[0].style.display = 'block';
+                    }
+                    else{
+                        let leng = 15;
+                        let auto_parts = await searchByCategorie(categ, nam);
+                        if (document.getElementById('searched__category').classList.length > 0){
+                            //save the old category and compares with the new one to verify if the table needs to update the data from a new category
+                            delData(document.getElementById('searched__category').classList[0], categ);
+                            document.getElementById('searched__category').classList.replace(document.getElementById('searched__category').classList[0], categ);
+                        }
+                        else document.getElementById('searched__category').classList.add(String(categ));
+                        if (leng > auto_parts.length) leng = auto_parts.length;
+                        for (let i = 0; i < leng; i++){
+                            if (auto_parts[i].stock > 0){
+                                let row = document.createElement('div');
+                                row.className = "subdata__space";
+                                let input = document.createElement('input');
+                                input.type = 'checkbox';
+                                input.className = 'spare__selected';
+                                input.classList.add(setClassName(String(auto_parts[i].name), "low line"));
+                                let field1, field2 , field3, field4;
+                                field1 = document.createElement('div');
+                                field2 = document.createElement('div');
+                                field3 = document.createElement('div');
+                                field4 = document.createElement('div');
+                                field1.className = "data__cell";
+                                field2.className = "data__cell";
+                                field3.className = "data__cell";
+                                field4.className = "data__cell";
+                                field1.textContent = auto_parts[i].name;
+                                field2.textContent = auto_parts[i].categorie;
+                                field3.textContent = auto_parts[i].price;
+                                input.setAttribute('data-id', auto_parts[i].stock);
+                                field4.append(input);
+                                field1.setAttribute('data-id', auto_parts[i].code);
+                                row.append(field1);
+                                row.append(field2);
+                                row.append(field3);
+                                row.append(field4);
+                                document.getElementById('data__space').append(row);
+                            }
+                        }
+                    }
+                }
+                function includeSpares(){
+                    let leng = document.getElementById('data__space').childElementCount;
+                    let spares = [];
+                    for (let i = 1; i < leng; i++){
+                        if (document.getElementById('data__space').children[i].children[3].children[0].checked){
+                            let element = {
+                                code : String(document.getElementById('data__space').children[i].children[0].dataset.id),
+                                name : String(document.getElementById('data__space').children[i].children[0].textContent),
+                                price : String(document.getElementById('data__space').children[i].children[2].textContent),
+                                stock : String(document.getElementById('data__space').children[i].children[3].children[0].dataset.id)
+                            };
+                            spares.push(element);
+                        }
+                    }
+                    for(let i of spares){
+                        //checks if the actual spare selected its already inside the table
+                        let inside = false;
+                        document.querySelectorAll('.details__header').forEach(e =>{
+                            if (e.children[0].dataset.id === i.code) inside = true;
+                        });
+                        if (inside === false){
+                            let center = document.createElement('div');
+                            center.classList.add('details__header');
+                            let product1 = document.createElement('div');
+                            let product2 = document.createElement('div');
+                            let product3 = document.createElement('div');
+                            let range = document.createElement('input');
+                            range.classList.add('number__data');
+                            range.type = 'number';
+                            range.min = '1';
+                            //modifie later
+                            range.max = i.stock;
+                            range.value = '1';
+                            product3.append(range);
+                            product1.classList.add('sec__product');
+                            product1.setAttribute('data-id', i.code);
+                            product2.classList.add('sec__product');
+                            product3.classList.add('sec__product');
+                            product1.textContent = i.name;
+                            product2.textContent = i.price;
+                            center.append(product1);
+                            center.append(product2);
+                            center.append(product3);
+                            document.getElementById('spare__table').append(center);
+                        }
+                    }
+                    document.getElementById('black_space').classList.remove('show');
+                    if (document.getElementById('spare__table').classList.contains('show') === false){
+                        document.getElementById('spare__table').classList.add('show');
+                    }
+                }
+                //document.addEventListener('DOMContentLoaded',setFields(""));
+                document.getElementById("search__spares").addEventListener('click',()=> setFields(document.getElementById("searched__category").value, getName(document.getElementById("searched__spare").value)));
+                document.getElementById('addSpare').addEventListener('click', includeSpares);
+                </script>
+                <script>
+                    let remo = false;
+                    let numb = 0;
+                    let k = 0;
+                    async function setCategories() {
+                        let res = await getListCat(document.getElementById('searched__category').value);
+                        if (res.length > 4) k = 4;
+                        else k = res.length;
+                        if (document.getElementById('searched__category').value.length > 0){
+                            for (let i = 0; i < k; i++){
+                                let li = document.getElementById('li__categorie' + String(i + 1));
+                                li.style.border = "1px solid #efe6ff";
+                                li.style.padding = "7px";
+                                li.textContent = res[i].name;
+                            }
+                        }
+                        numb = 0;
+                        document.getElementById('categorie__list').addEventListener('click', (e)=>{
+                            if(e.target.classList.contains('li__categorie') && numb < 1){
+                                document.getElementById('searched__category').value = e.target.textContent;
+                                numb += 1;
+                                document.querySelectorAll('.li__categorie').forEach(el => el.textContent = '');
+                                document.querySelectorAll('.li__categorie').forEach(el =>  el.style.padding = "0px");
+                                document.querySelectorAll('.li__categorie').forEach(el =>  el.style.border = "0px");
+                            }
+                        });
+                    }
+                    document.getElementById('searched__category').addEventListener('keydown', (e)=>{
+                        if(e.key === 'BACKSPACE' || e.key === 'DELETE'){
+                            remo = false;
+                        }
+                    });
+                    document.getElementById('searched__category').addEventListener('input', async(e)=>{
+                        document.getElementById('categorie__list').childNodes.forEach(x=>{
+                            x.textContent = "";
+                        });
+                        if (document.getElementById('searched__category').value.length === 0){
+                            document.querySelectorAll('.li__categorie').forEach(el =>  el.style.padding = "0px");
+                            document.querySelectorAll('.li__categorie').forEach(el =>  el.style.border = "0px");
+                            return;
+                        }
+                        else{
+                            await setCategories();
+                        }
+                    });
+                </script>
+            </div>
+        </div>
+        <script>
+            document.getElementById('parts').addEventListener('click', (e)=>{
+                document.getElementById('black_space').classList.toggle('show');
+                document.querySelectorAll('.subdata__space').forEach(e =>{
+                    //just to delete data and not header
+                    if (String(e.children[0].textContent) != "name") e.remove();
+                });
+            });
+            document.querySelector('.cancel__addition').addEventListener('click', (e)=>{
+                document.getElementById('black_space').classList.remove('show');
+                document.getElementById('searched__spare').value= "";
+                document.getElementById('searched__category').value= "";
+                document.querySelectorAll('.subdata__space').forEach(e =>{
+                    //just to delete data and not header
+                    if (String(e.children[0].textContent) != "name") e.remove();
+                });
+                 document.querySelectorAll('.warning__text')[0].style.display = 'none';
+            });
+            document.querySelector('.black__space').addEventListener('click', (e)=>{
+                if (e.target.classList[0] === "black__space"){
+                    document.getElementById('black_space').classList.remove('show');
+                    document.getElementById('searched__spare').value= "";
+                    document.getElementById('searched__category').value= "";
+                }
+            });
+        </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', createOptions());
+        </script>
+
+    </div>
+    
+</body>
+</html>

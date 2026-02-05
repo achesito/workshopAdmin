@@ -1,0 +1,91 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #fff;
+    color: #000;
+    margin: 0;
+    padding: 0;
+}
+
+.contenedor {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+.titulo {
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.formulario {
+    background-color: #f3ecff;
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    font-size: 16px;
+}
+
+.tabla {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+}
+
+.tabla th, .tabla td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+}
+
+.tabla th {
+    background-color: #e0d6f9;
+    font-weight: bold;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.modal-contenido {
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 0;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 900px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    position: relative;
+}
+
+.modal-contenido iframe {
+    width: 100%;
+    height: 500px;
+    border: none;
+    border-radius: 0 0 10px 10px;
+}
+
+.cerrar {
+    color: white;
+    background-color: red;
+    float: right;
+    font-size: 22px;
+    font-weight: bold;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 0 0 0 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+}

@@ -1,0 +1,138 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Agenda de Mantenimientos</title>
+    <link rel="stylesheet" href="{% static 'autotaller/agenda.css' %}">
+    <link rel="stylesheet" href="{% static 'autotaller/normalize.css' %}">
+    <link rel="stylesheet" href="{%static 'autotaller/header.css' %}">
+    <script src="{%static 'autotaller/js/addButtons.js'%}"></script>
+    <script type="module" src="{%static 'autotaller/js/getElements.js'%}"></script>
+</head>
+<body>
+    <header>
+    <div class="header-display">
+            <div class="options">
+                <nav class="nav-options">
+                        <ul class="ul-options">
+                            <li class="li-options" id="li-options0"><a href="/checkRegistration">Home</a></li>
+                            <li class="li-options" id="li-options1"><a href="/addMaintenance">add maintenance</a></li>
+                            <li class="li-options" id="li-options2"><a>add Vehicle</a></li>
+                            <li class="li-options" id="li-options3"><a>create report</a></li>
+                            <li class="li-options" id="li-options4"><a href="/agenda">scheduled</a></li>
+                            <script>
+                                function removeMore(){
+                                    if (window.innerWidth > 1120){
+                                        document.getElementById('li-more').style.display = 'none';
+                                    }
+                                    else{
+                                        document.getElementById('li-more').style.display = 'block';
+                                    }
+                                }
+                                function load(){
+                                    const width = 840;
+                                    if (window.innerWidth <= 840 && document.getElementById('li-container').lastChild.textContent != "RESPONSABILIDAD"){
+                                        const div = document.createElement('div');
+                                        const a = document.createElement('a');
+                                    }
+                                    else{
+                                        if (window.innerWidth > 840 && document.getElementById('li-container').lastChild.textContent === "RESPONSABILIDAD"){
+                                            document.getElementById('li-container').lastChild.remove();
+                                        }
+                                }
+                            }
+                                window.addEventListener("resize", removeMore);
+                                window.addEventListener("resize", load);
+                                document.addEventListener('DOMContentLoaded',load);
+                            </script>
+                            <script>
+                                document.getElementById('li-more').addEventListener('click', (event)=>{
+                                    document.getElementById('click-counter').textContent = (parseInt(document.getElementById('click-counter').textContent) + 1).toString();
+                                    const doc = document.getElementById('li-container');
+                                    const click_count = parseInt(document.getElementById('click-counter').textContent);
+                                    doc.classList.toggle('active');
+                                });
+                            </script>
+                            <script>
+                                const element = document.getElementById('li-more');
+                                const li = window.getComputedStyle(document.getElementById('li-more'));
+                                const observer = new MutationObserver(()=>{
+                                    if(li.display === 'none'){
+                                        document.getElementById('li-container').style.display = 'none';
+                                    }
+                                    else{
+                                        document.getElementById('li-container').style.display = 'flex';
+                                    }
+                                });
+                                observer.observe(element, {attributes : true});
+                            </script>
+                        </ul>
+                </nav>
+                <button class="responsive-button" id="responsive-button"></button>
+                <script>
+                    document.getElementById('responsive-button').addEventListener('click', function(){
+                        const menu = document.getElementById('responsive-menu');
+                        menu.classList.toggle('acti');
+                        document.getElementById('responsive-button').style.left = '100%';
+                    });
+                </script>
+                <div class="responsive-menu" id="responsive-menu">
+                    <button class="button-close-menu" id="button-close-menu"><i class="fa-solid fa-xmark"></i></button>
+                    <script>
+                        document.getElementById('button-close-menu').addEventListener('click', function(){
+                        const menu = document.getElementById('responsive-menu');
+                        menu.classList.toggle('acti');
+                        document.getElementById('responsive-button').style.left = '90%';
+                    });
+                    </script>
+                    <div class="responsive-structure" id="responsive-structure">
+                            <ul class="ul-structure" id="ul-structure">
+                                <li class="li-options-responsive" id="li1"><a href="/consultarRegistro">inicio</a></li>
+                                <li class="li-options-responsive" id="li2"><a href="/agregarMantenimiento">mantenimiento nuevo</a></li>
+                                <li class="li-options-responsive" id="li3">nuevo vehiculo</li>
+                            </ul>
+                    </div>
+                </div>
+        </div>
+    </header>
+    {%csrf_token%}
+    <meta name="csrf_token" content="{{ csrf_token }}">
+    <h1>Maintenance agenda</h1>
+    <div id="agenda-cards"></div>
+
+    <div id="modalDetail">
+        <button id="closeModal">&times;</button>
+        <iframe id="iframeDetail"></iframe>
+    </div>
+    <script>
+        function clean(){
+            let grid = document.getElementById('buttons__sec');
+            let quantity = grid.children.length;
+            for (let i = 0; i < quantity; i++){
+                if (grid.lastChild.id != "previous-arrow" && grid.children.length > 1 ){
+                    grid.lastChild.remove();
+                }
+            }
+            grid.style.display = "none";
+        }
+    </script>
+    <script>
+
+        window.checkDetail = function(id) {
+            window.location.href = `/maintenance/${id}/`;
+        }
+
+        if (document.getElementById('agenda-cards').children.length > 20){
+            document.getElementById('agenda-cards').style.flexDirection = 'column';
+            document.getElementById('agenda-cards').style.alignContent = 'center';
+            document.getElementById('agenda-cards').style.justifyContent = 'flex-start';
+        }
+    </script>
+    <section>
+        <div class="buttons__sec" id="buttons__sec">
+            <button class="arrows buttons__page" id="previous-arrow"><</button>
+        </div>
+    </section>
+</body>
+</html>

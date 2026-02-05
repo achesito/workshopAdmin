@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <title>Maintenance Bill</title>
+
+    <style>
+        body {
+            font-family: Helvetica, sans-serif;
+            font-size: 10pt;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 16pt;
+            margin-bottom: 20px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        .header-table td {
+            padding: 10px;
+        }
+
+        .invoice-title {
+            font-size: 38pt;
+            font-weight: 400;
+        }
+
+        .small-text {
+            font-size: 9pt;
+            text-align: right;
+        }
+
+        .box {
+            /*border: 1px solid #f2ecff;*/
+            margin-top: 20px;
+        }
+
+        .box th {
+            background-color: #e5dfff;
+            text-align: left;
+            padding: 6px;
+            font-weight: bold;
+        }
+
+        .box td {
+            padding: 6px;
+        }
+
+        .car-table td {
+            border-bottom: 1px solid #ac9fff;
+            padding: 6px;
+        }
+
+        .car-label {
+            font-weight: bold;
+            color: #9284ff;
+        }
+
+        .services th {
+            background-color: #e9e5f9;
+            border: 1px solid #f7f2ff;
+            padding: 6px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .services td {
+            border: 1px solid #000;
+            padding: 6px;
+        }
+
+        .right {
+            text-align: right;
+        }
+
+        .totals td {
+            padding: 8px;
+            border-bottom: 1px solid #000;
+        }
+
+        .total {
+            font-size: 14pt;
+            font-weight: bold;
+        }
+
+        .signature {
+            margin-top: 40px;
+            border-top: 1px solid #000;
+            width: 400px;
+            padding-top: 5px;
+			border-left: 1px solid #000;
+			border-right: 1px solid #000;
+			border-bottom: 1px solid #000;
+        }
+
+		.signature td{
+			width: 100%;
+			padding-top: 10px;
+			background-color: rgb(255, 255, 255);
+		}
+
+		.title-data{
+			font-size: 14pt;
+			font-weight: bold;
+			padding-top: 5px;
+			padding-left: 10px;
+			border-bottom: 1px solid #000;
+		}
+
+		.row-signature{
+			font-weight: bold;
+			font-size: 10pt;
+			padding: 7px 0px 0px 10px;
+            border-bottom: 1px solid #d9d0ff;
+		}
+
+        .dataPlus{
+            border-bottom: 2px solid #9486ff;
+            padding-bottom: 10px;
+            position: relative;
+            bottom: 30px;
+        }
+
+        .header-table tr{
+            border-bottom: 2px solid #9b84ff;
+        }
+
+        .header-table{
+            margin-bottom: 25px;
+        }
+
+        .contentData{
+            border: 1px solid #000;
+        }
+
+        .aditionalData{
+            padding: 2px;
+        }
+        .subTitle{
+            font-size: x-large;
+            font-weight: 500;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<table class="header-table">
+    <tr>
+        <td class="invoice-title">Factura</td>
+        <td class="small-text">
+            FOLIO: <span id="numInvoice">{{ maintenance.idNumber }}</span><br />
+            FECHA: <span id="dateInvoice">{{ date }}</span><br />
+            MONEDA ACTUAL: <span>{{ establishment.currencyName }}</span><br />
+            IDENTIFICADOR TRIBUTARIO (NIT): <span>{{ establishment.legalIdentifier }}</span><br />
+            IDENTIFICADOR PARA IMPUESTOS (NRC): <span>{{ establishment.taxIdentifier }}</span>
+        </td>
+    </tr>
+</table>
+
+<!-- ISSUER / CUSTOMER -->
+<table width="100%" cellspacing="10">
+    <tr>
+        <td class="contentData" width="45%">
+            <table class="box">
+                <tr><th>Datos del emisor</th></tr>
+                <tr><td id="establishment-name">{{ establishment.name }}</td></tr>
+                <tr><td id="tax-address">{{ establishment.address }}</td></tr>
+                <tr><td id="phone-establishment">Tel: <span>{{ establishment.phone_number }}</span></td></tr>
+                <tr><td id="establishment-mail">Email: <span>{{ establishment.mail }}</span></td></tr>
+            </table>
+        </td>
+        <td width="10%"></td>
+        <td class="contentData" width="45%">
+            <table class="box">
+                <tr><th>Cliente:</th></tr>
+                <tr><td id="customer-name">{{ customer.name }}</td></tr>
+                <tr>
+                    <td>documento: <span id="document-number">{{ customer.id_card }}</span></td>
+                </tr>
+                <tr><td>tipo documento: <span id="customer-phone">{{ customer.licenceType }}</span></td></tr>
+                <tr><td>Email: <span id="customer-mail">{{ customer.mail }}</span></td></tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+<!-- CAR DATA -->
+<table class="car-table" width="100%" style="margin-top:20px;">
+    <tr>
+        <td><span class="car-label">Placa:</span> <span id="car-plate">{{ vehicle.plate }}</span></td>
+        <td><span class="car-label">Modelo:</span> <span id="model-name">{{ vehicle.model }}</span></td>
+    </tr>
+    <tr>
+        <td><span class="car-label">Año: </span> <span id="Car-Year">{{ vehicle.year }}</span></td>
+        <td><span class="car-label">Color:</span> <span id="color"></span>{{ vehicle.colour }}</td>
+    </tr>
+    <tr>
+        <td><span class="car-label">kilometraje: </span> <span id="km">{{ vehicle.distance }}</span></td>
+        <td><span class="car-label">transmisión: </span><span id="transmition">{{ vehicle.transmition }}</span></td>
+    </tr>
+</table>
+
+<!-- SERVICES -->
+<table class="services" style="margin-top:20px;">
+    <tr>
+        <th width="10%">Cant</th>
+        <th width="55%">Descripcion</th>
+        <th width="15%">Precio Unitario</th>
+        <th width="20%">Ventas exentas</th>
+    </tr>
+    {%for element in elements%}
+    <tr>
+        <td class="right">{{ element.quantity }}</td>
+        <td >{{ element.name }}</td>
+        <td class="right">{{ element.price }}</td>
+        <td class="right">{{ element.amount }}</td>
+    </tr>
+    {% endfor%}
+</table>
+
+<!-- TOTALS -->
+<table width="100%" style="margin-top:20px;">
+    <tr>
+        <td width="45%">
+            <table class="aditionalData">
+                 <tr><th class="title-data">Datos adicionales:</th></tr>
+                 <tr><td class="row-signature"><span>Metodo De Pago: </span> <span id="payment-method">{{ maintenance.paymentMethod }}</span></td></tr>
+                 <tr><td class="row-signature"><span>Estado del pago:</span> <span id="status-pay">{{ maintenance.status }}</span></td></tr>
+                 <tr><td class="row-signature"><span>Fecha del servicio:</span> <span id="signature-inv">{{ maintenance.dateService }}</span></td></tr>
+            </table>
+        </td>
+        <td width="10%"></td>
+        <td width="45%">
+            <table class="totals">
+                <tr>
+                    <td>Subtotal</td>
+                    <td id="subtotal-cost" class="right">{{ maintenance.sub }}</td>
+                </tr>
+                <tr>
+                    <td class="subTitle">Total</td>
+                    <td id="total-cost" class="right total">{{ maintenance.tot }}</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<span>Este documento no posee ningún respaldo fiscal ni tributario para efectos de control o contabilidad, constituye un comprobante informativo
+    utilizado con propositos de consulta para definir los detalles del servicio
+</span>
+</body>
+</html>

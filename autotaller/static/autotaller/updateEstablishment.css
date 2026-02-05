@@ -1,0 +1,96 @@
+@media (max-width : 640px){
+    .bussines__section{
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        width: 100dvw !important;
+        padding: 0 !important;
+        min-width: 0;
+    }
+
+    .data__section{
+        padding: 30px;
+    }
+
+}
+
+section{
+    margin-top: 80px;
+}
+
+.bussines__section{
+    padding: 30px;
+    height: max-content;
+    width: 45dvw;
+    border-radius: 20px;
+    border: 1px solid #000;
+    margin: auto;
+}
+
+.div__data1{
+    font-size: clamp(10px, 1vw + 2rem, 43px);
+    font-weight: 600;
+}
+
+.div__data2{
+    margin-top: 35px;
+    font-weight: 300;
+}
+
+fieldset{
+    border: 0px solid #fff;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    gap: 30px;
+    text-align: center;
+    min-width: 0;
+}
+
+.data__input{
+    flex-basis: 40%;
+    flex-grow: 1;
+    gap: 2em;
+    height: 35px;
+    width: 40%;
+    min-width: 120px;
+    border: 1px solid #000000;
+    padding: 8px;
+    border-radius: 5px;
+}
+
+form{
+    margin-top: 30px;
+    width: 100%;
+    height: max-content;
+    min-width: 0;
+}
+
+.sec__data{
+    flex-basis: 40%;
+    flex-grow: 1;
+    gap: 2em;
+    height: 35px;
+    width: 40%;
+    min-width: 120px;
+    border: 1px solid #ffffff;
+    padding: 8px;
+    border-radius: 5px;
+}
+
+.button__save{
+    background-color: #c6c5ff;
+    font-weight: 500;
+    color: #ffffff;
+    height: 100%;
+    min-height: 0;
+    border-radius: 10px;
+}
+
+.currencies-select{
+    width: 100%;
+    display: block;
+    border: 1px solid #939090;
+    border-radius: 7px;
+    height: max-content;
+    padding: 7px;
+}

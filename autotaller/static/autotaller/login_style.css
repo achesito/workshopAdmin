@@ -1,0 +1,152 @@
+html{
+    min-height: 100%;
+    min-width: 100%;
+}
+
+body{
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font: 'roboto';
+    font-optical-sizing: auto;
+    font-style: normal;
+    background-color: rgb(255, 240, 240);
+    font-weight: 100;
+    height: 100dvh;
+}
+
+
+h2{
+    font-weight: 500 !important;
+    padding-top: 20px;
+}
+
+.text__span{
+    position: relative;
+    bottom: 15px;
+    display: inline-block;
+    padding-bottom: 5px;
+    color: gray;
+    font-size: clamp(4px, 1vw + .18rem, 11px);
+}
+
+
+.nav__form{
+    align-content: center;
+    margin: auto;
+    min-width: 0;
+    height: 100dvh;
+}
+
+.form__container{
+    margin: auto;
+    flex-wrap: wrap;
+    display: flex;
+    flex-direction: row;
+    width: 930px;
+    max-width: 90%;
+    min-width: 0;
+    background-color: #000;
+    height: 70%;
+    border-radius: 40px;
+}
+
+.workshop__info{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-grow: 1;
+    border: 2px solid #000;
+    font-size: clamp(12px, 1vw + .4rem, 21px);
+    text-align: center;
+    width: 450px;
+    min-height: 70%;
+    max-height: 70%;
+    color: #fff;
+    min-width: 0;
+    background-color: #000;
+    border-radius: 40px;
+}
+
+.workshop__info h2{
+    padding-top: 0px;
+}
+
+.workshop__info p{
+    font-size: clamp(6px, 1vw + .4rem, 11px);
+    padding: 20px;
+    margin-bottom: 40px;
+}
+
+.form__login{
+    padding-top: 1px;
+    text-align: center;
+    background-color: #fff !important;
+    position: relative;
+    font-size: clamp(12px, 1vw + .4rem, 21px);
+    border-radius: 40px;
+    width: 450px;
+    min-width: 0;
+    max-width: 70%;
+    height: 100%;
+    margin: auto;
+    box-shadow: 2px 8px 20px 0px #390685;
+    background: transparent;
+}
+
+.form__fieldset{
+    padding-top: 5%;
+    height: 70px;
+    min-width: 0;
+    max-height: 90%;
+    border: 0px;
+}
+
+.fieldset__sign{
+    height: 30px !important;
+    font-size: clamp(12px, 1vw + .7rem, 20px);
+}
+
+.fieldset__input{
+    display: inline-block;
+    font-size: clamp(7px, 1vw + .4rem, 15px);
+    border: 1px solid #000;
+    border-radius: 10px;
+    height: 40px;
+    max-height: 70%;
+    width: 500px;
+    min-width: 0;
+    max-width: 90%;
+}
+
+.input__login{
+    text-align: center;
+    position: relative;
+    top: 10px;
+    height: 31px;
+    max-width: 80%;
+    width: 150px;
+}
+
+@media (max-width: 1004px){
+
+    .workshop__info{
+        height: max-content;
+        flex-grow: 1;
+    }
+
+    .workshop__info p{
+        margin-bottom: 0px;
+        padding: 20px;
+    }
+    .form__container{
+        height: min-content;
+        width: 450px;
+        max-width: 100%;
+    }
+    
+    .form__login{
+        border-radius: 0px 0px 40px 40px;
+        margin: 0;
+        flex-grow: 2;
+        max-width: 100%;
+    }
+}

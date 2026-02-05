@@ -1,0 +1,246 @@
+.form__container{
+    width: 95%;
+    min-width: 0;
+    background-color: rgb(255, 255, 255);
+    margin: 60px auto 0 auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    border-radius: 20px;
+    border: 0px solid #fff;
+}
+
+.form__vehicle{
+    min-width: 0 !important;
+}
+
+.responsive__fields{
+    display: none;
+}
+
+.responsive__imgs{
+    display: none;
+}
+
+.img__fields{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    border-radius: 20px;
+    width: 65%;
+    min-width: 0;
+}
+
+
+.file__space{
+    min-width: 0;
+    margin: 15px auto 15px auto;
+    width: 70%;
+    border: 1px solid #000;
+    height: 80%;
+    display: block;
+}
+
+.img__input{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    border-radius: 20px;
+    overflow-y: none;
+}
+
+.form__vehicle{
+    font-size: clamp(7px, 1vw + .48rem, 17px);
+    min-width: 270px;
+    border-radius: 20px;
+    border: 1px solid #000;
+    /*(cuidado) doble scroll en y si ya existe altura definida*/
+    flex-grow: 1;
+}
+
+.fieldset__form{
+    border: 0px solid #000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: clamp(6px, 1vw + .33rem, 17px);
+}
+
+.error__message{
+    width: 100%;
+    border-radius: 15px;
+    background-color: #fecfcf;
+    color: #b80f0f;
+    margin-bottom: 10px;
+    display: none;
+    text-align: center;
+    padding-bottom: 5px;
+}
+
+.form__sec{
+    height: 50%;
+    min-height: 0;
+    display: grid;
+}
+
+.file__input{
+    display: none;
+}
+
+.sec1{
+    grid-template-rows: repeat(4, 1fr);
+}
+
+.sec2{
+    grid-template-rows: repeat(5, 1fr);
+}
+
+.file__link{
+    cursor: pointer;
+    padding-bottom: 8px;
+    text-align: center;
+}
+
+.url__text{
+    padding: 0 7px 0 7px;
+    overflow-x: auto;
+    text-align: center;
+}
+
+h2{
+    text-align: center;
+    font-weight: 600;
+    padding-bottom: 6px;
+}
+
+.licence{
+    margin-top: 0 !important;
+}
+
+.vehicle__send{
+    font-size: clamp(5px, 1vw +.2rem, 14px) !important;
+    border-radius: 20px;
+    height: 32px !important;
+    margin: 7px auto 5px auto;
+    width: 30% !important;
+    min-width: 0;
+    background-color: #4736fcd9;
+}
+
+.vehicle__input{
+    border: 0px;
+    cursor: pointer;
+    border-bottom: 1px #000 solid ;
+    height: 25px;
+    width: 100%;
+    min-width: 0;
+}
+
+#dist{
+    flex-direction: row;
+}
+
+#dist select{
+    border: 0px solid #FFF;
+    border-bottom: 1px solid #000 ;
+}
+
+#engine{
+    resize: none;
+    align-content: start;
+    height: 47px;
+}
+
+.img__container{
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+}
+
+.img__container img{
+    height: 100%;
+    min-height: 0;
+    min-width: 0;
+    width: 100%;
+}
+
+@media (max-width: 900px) {
+    .img__fields{
+        display: flex;
+        flex-direction: row;
+        overflow-x: scroll;
+        overflow-y: hidden;
+        height: 300px;
+        width: 100%;
+        min-width: 0;
+        margin: auto;
+        margin-bottom: 20px;
+    }
+
+    .responsive__fields{
+        display: none;
+    }
+
+    .file__space{
+        width: 90%;
+        height: 90%;
+        margin: 7px auto 7px auto;
+        border: 0px #000 solid;
+    }
+
+    .img__container{
+        width: 100%;
+        height: 100%;
+        border: 1px #000 solid;
+        margin: auto;
+    }
+
+    .img__input{
+        overflow-x: scroll;
+        border: 0px solid #000;
+        margin: 0px 15px 0 15px;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        min-width: 200px;
+        width: 40%;
+        height: 100%;
+        min-height: 0;
+    }
+
+    .img__container img{
+        height: 100%;
+        width: 100%;
+        object-fit: fill !important;
+    }
+    
+    .file__link{
+        border: 0px solid #000;
+        cursor: pointer;
+        padding-bottom: 3px;
+        text-align: center;
+    }
+
+    .form__container{
+        width: 80%;
+        height: fit-content;
+    }
+}
+
+.id__Container{
+    width: 100%;
+    min-width: 0;
+    height: 12px;
+    margin: 0;
+    min-height: 0;
+    display: block;
+    list-style-type: none;
+    padding: 0;
+}
+
+.real__id{
+    cursor: pointer;
+    font-weight: 400;
+    font-size: clamp(7px, 1vw + .2rem, 16px);
+    list-style-type: none;
+}

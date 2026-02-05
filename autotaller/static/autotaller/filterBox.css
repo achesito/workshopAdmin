@@ -1,0 +1,134 @@
+.filters-box{
+    width: 450px;
+    display: none;
+    height: max-content;
+    border: 1px solid rgb(167, 167, 167);
+    background-color: #fff;
+    margin: auto;
+    z-index: 1;
+}
+
+.box-line{
+    margin-top: 10px;
+    width: 100%;
+    height: max-content;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.box-line span{
+    display: block;
+    padding-bottom: 5px;
+    font-size: x-small;
+    color: #c21010;
+}
+
+.box-line select, .box-line input, .filter-option{
+    border: 1px solid rgb(209, 209, 209);
+    height: 30px;
+    width: 160px;
+    min-width: 0;
+    background-color: #fff;
+}
+
+.box-container{
+    width: 100% !important;
+    text-align: center;
+    min-width: 0;
+}
+
+.box-line input{
+    padding: 0px;
+}
+
+.box-title{
+    color: #b399ff;
+    font-weight: 500;
+    margin-top: 0px;
+    font-size: x-large;
+    text-align: center !important;
+}
+
+.belowSection{
+    margin-top: 15px;
+}
+
+.button-field{
+    width: 160px;
+    height: 30px;
+    background-color: #000000;
+    color: #d10000;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.box-close{
+    margin-top: 0px;
+    justify-content: flex-end;
+}
+
+.but-close{
+    position: relative;
+    padding-right: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: larger;
+    background-color: #FFF;
+    border: 0px solid #000;
+}
+
+.modelInput{
+    max-width: 100% !important;
+    width: 80% !important;
+    min-width: 0;
+    padding: 4px !important;
+}
+
+.options-container{
+    position: absolute;
+    height: max-content;
+    max-height: 60px;
+    width: 160px;
+    z-index: 10;
+    min-width: 0;
+    margin: 0;
+    text-decoration: none;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0;
+    display: none;
+    border-left: 1px solid #6f6f6f;
+    border-right: 1px solid #6f6f6f;
+    border-bottom: 1px solid #6f6f6f;
+}
+
+.filter-option{
+    cursor: pointer;
+}
+
+.quantity-range{
+    padding: 4px;
+}
+
+.input-range{
+    display: flex;
+}
+
+.span-range{
+    text-align: center;
+    cursor: pointer;
+}
+
+.quantity-right{
+    margin-left: 44px;
+}
+
+.arrival-quant{
+    margin-right: 10px;
+    width: fit-content !important;
+    max-width: 50px !important;
+}
+
+.spare_name{
+    margin-top: 16px;
+}
