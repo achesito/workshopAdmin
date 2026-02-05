@@ -7,4 +7,3 @@ matplotlib==3.10.1
 numpy==2.2.4
 xhtml2pdf==0.2.11
 requests==2.32.5
-python-dotenv==1.2.1
