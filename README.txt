@@ -17,8 +17,8 @@ what you need to register. basically, you can adapt attributes and use them for 
 
 Here's the steps to copy and install the repository, remember you should have PostgreSQL installed on your pc mandatorily, preferably PostgreSQL 15 or over: 
 1 - clone the repository: 
-git clone <https://github.com/achesito/workshopAdmin>
-cd workshopAdmin 
+Open the selected directory (cd "path to your directory on the system" or create a new one at your preferred address and write inside it , preferably in git bash:
+git clone <https://github.com/achesito/workshopAdmin> 
 2 - create virtual environment:
 python -m venv venv
 venv\Scripts\activate
@@ -82,8 +82,8 @@ Este archivo explica la información básica para descargar e instalar el reposi
 
 Estos son los pasos para copiar e instalar el repositorio. Recuerda que debes tener PostgreSQL instalado en tu PC, preferiblemente PostgreSQL 15 o superior:
 1 - Clonar el repositorio:
+Abré el directorio (cd "ruta de tu directorio en el sistema" seleccionado o crea uno nuevo en la dirección de tu preferencia y escribe dentro de él, preferiblemente en git bash:
 git clone <https://github.com/achesito/workshopAdmin>
-cd workshopAdmin
 2 - Crear entorno virtual:
 python -m venv venv
 venv\Scripts\activate
